@@ -1,0 +1,6 @@
+postgres-plv8
+=============
+
+Docker image for running PLV8 1.4 on Postgres 9 (9.4).
+
+Based on the [official Postgres image](http://registry.hub.docker.com/_/postgres/).
