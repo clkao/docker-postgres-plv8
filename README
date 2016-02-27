@@ -1,7 +1,7 @@
 postgres-plv8
 =============
 
-Docker image for running PLV8 1.4 on Postgres 9 (9.4 and 9.5).
+Docker images for running PLV8 1.4 and 1.5 on Postgres 9 (9.4 and 9.5).
 
 Based on the [official Postgres image](http://registry.hub.docker.com/_/postgres/).
 
@@ -9,8 +9,8 @@ Based on the [official Postgres image](http://registry.hub.docker.com/_/postgres
 
 Start a postgres server container with persistent storage and give it a name:
 
-    % docker run -d -v /tmp/data:/var/lib/postgresql/data --name some-postgres clkao/postgres-plv8:9.5
+    % docker run -d -v /tmp/data:/var/lib/postgresql/data --name some-postgres clkao/postgres-plv8:9.5-1.5
 
 Start client container that links to the server container above as the "postgres" alias:
 
-    % docker run --link some-postgres:postgres --rm -ti clkao/postgres-plv8:9.5 bash -c 'psql -U postgres -h $POSTGRES_PORT_5432_TCP_ADDR'
+    % docker run --link some-postgres:postgres --rm -ti clkao/postgres-plv8:9.5-1.5 bash -c 'psql -U postgres -h $POSTGRES_PORT_5432_TCP_ADDR'
