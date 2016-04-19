@@ -2,8 +2,8 @@ FROM postgres:9.4
 
 MAINTAINER Chia-liang Kao <clkao@clkao.org>
 
-ENV PLV8_VERSION=v1.5.1 \
-    PLV8_SHASUM="b577c26b4538e9e3e14d96760af53ad7ab516cf89bf5873f107a6faa8156c2c8  v1.5.1.tar.gz"
+ENV PLV8_VERSION=v1.5.2 \
+    PLV8_SHASUM="48110a603755d399bf63ca65ab3a9ffe61a8baae887f195ace3ea7bf033ed981  v1.5.2.tar.gz"
 
 RUN buildDependencies="build-essential \
     ca-certificates \
