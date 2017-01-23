@@ -5,10 +5,13 @@ Docker images for running [plv8](https://github.com/plv8/plv8) 1.4 and 1.5 on Po
 [![clkao/postgres-plv8][docker-pulls-image]][docker-hub-url] [![clkao/postgres-plv8][docker-stars-image]][docker-hub-url]
 
 ## Supported tags and respective `Dockerfile` links
+- `9.6-2.0` ([9.6-2.0/Dockerfile](https://github.com/clkao/docker-postgres-plv8/blob/master/9.6-2.0/Dockerfile))
 - `9.6-1.5`, `latest` ([9.6-1.5/Dockerfile](https://github.com/clkao/docker-postgres-plv8/blob/master/9.6-1.5/Dockerfile))
 - `9.6-1.4` ([9.6-1.4/Dockerfile](https://github.com/clkao/docker-postgres-plv8/blob/master/9.6-1.4/Dockerfile))
+- `9.5-2.0` ([9.5-2.0/Dockerfile](https://github.com/clkao/docker-postgres-plv8/blob/master/9.5-2.0/Dockerfile))
 - `9.5-1.5` ([9.5-1.5/Dockerfile](https://github.com/clkao/docker-postgres-plv8/blob/master/9.5-1.5/Dockerfile))
 - `9.5-1.4` ([9.5-1.4/Dockerfile](https://github.com/clkao/docker-postgres-plv8/blob/master/9.5-1.4/Dockerfile))
+- `9.4-2.0` ([9.4-2.0/Dockerfile](https://github.com/clkao/docker-postgres-plv8/blob/master/9.4-2.0/Dockerfile))
 - `9.4-1.5` ([9.4-1.5/Dockerfile](https://github.com/clkao/docker-postgres-plv8/blob/master/9.4-1.5/Dockerfile))
 - `9.4-1.4` ([9.4-1.4/Dockerfile](https://github.com/clkao/docker-postgres-plv8/blob/master/9.4-1.4/Dockerfile))
 
