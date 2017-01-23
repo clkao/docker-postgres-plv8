@@ -2,7 +2,7 @@
 
 Docker images for running [plv8](https://github.com/plv8/plv8) 1.4 and 1.5 on Postgres 9 (9.4, 9.5 and 9.6). Based on the [official Postgres image](http://registry.hub.docker.com/_/postgres/).
 
-[![clkao/postgres-plv8][docker-pulls-image]][docker-hub-url] [![clkao/postgres-plv8][docker-stars-image]][docker-hub-url] [![clkao/postgres-plv8][docker-size-image]][docker-hub-url] [![clkao/postgres-plv8][docker-layers-image]][docker-hub-url]
+[![clkao/postgres-plv8][docker-pulls-image]][docker-hub-url] [![clkao/postgres-plv8][docker-stars-image]][docker-hub-url]
 
 ## Supported tags and respective `Dockerfile` links
 - `9.6-1.5`, `latest` ([9.6-1.5/Dockerfile](https://github.com/clkao/docker-postgres-plv8/blob/master/9.6-1.5/Dockerfile))
