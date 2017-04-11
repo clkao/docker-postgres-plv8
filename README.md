@@ -6,7 +6,7 @@ Docker images for running [plv8](https://github.com/plv8/plv8) 1.4, 1.5 and 2.0 
 
 ## Supported tags and respective `Dockerfile` links
 - `9.6-2.0`, `latest` ([9.6-2.0/Dockerfile](https://github.com/clkao/docker-postgres-plv8/blob/master/9.6-2.0/Dockerfile))
-- `9.6-2.0` ([9.6-1.5/Dockerfile](https://github.com/clkao/docker-postgres-plv8/blob/master/9.6-1.5/Dockerfile))
+- `9.6-1.5` ([9.6-1.5/Dockerfile](https://github.com/clkao/docker-postgres-plv8/blob/master/9.6-1.5/Dockerfile))
 - `9.6-1.4` ([9.6-1.4/Dockerfile](https://github.com/clkao/docker-postgres-plv8/blob/master/9.6-1.4/Dockerfile))
 - `9.5-2.0` ([9.5-2.0/Dockerfile](https://github.com/clkao/docker-postgres-plv8/blob/master/9.5-2.0/Dockerfile))
 - `9.5-1.5` ([9.5-1.5/Dockerfile](https://github.com/clkao/docker-postgres-plv8/blob/master/9.5-1.5/Dockerfile))
@@ -23,7 +23,7 @@ This image behaves exactly like the official Postgres image with the only differ
 
 ```sh
 $ docker run --rm --name postgres -it clkao/postgres-plv8:9.6-2.0
-$ docker run --rm --link postgres:postgres -it postgres-plv8:9.6-2.0 bash -c 'psql -U postgres -h $POSTGRES_PORT_5432_TCP_ADDR -t -c "CREATE EXTENSION plv8; SELECT extversion FROM pg_extension WHERE extname = ''plv8'';"'
+$ docker run --rm --link postgres:postgres -it clkao/postgres-plv8:9.6-2.0 bash -c "psql -U postgres -h \$POSTGRES_PORT_5432_TCP_ADDR -t -c \"CREATE EXTENSION plv8; SELECT extversion FROM pg_extension WHERE extname = 'plv8';\""
 ```
 
 You should see the version of the plv8 extension installed.
