@@ -14,6 +14,7 @@ env:
   - VERSION=9.6-1.4
   - VERSION=9.6-1.5
   - VERSION=9.6-2.0
+  - VERSION=10.1-2.1
 
 language: bash
 
