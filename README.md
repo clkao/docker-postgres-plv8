@@ -1,13 +1,14 @@
 # postgres-plv8
 
-Docker images for running [plv8](https://github.com/plv8/plv8) 1.4, 1.5 and 2.x on Postgres 9 (9.4, 9.5 and 9.6) and 10\. Based on the [official Postgres image](http://registry.hub.docker.com/_/postgres/).
+Docker images for running [plv8](https://github.com/plv8/plv8) 1.4, 1.5 and 2.x on Postgres 9 (9.4, 9.5 and 9.6) and 10.x\. Based on the [official Postgres image](http://registry.hub.docker.com/_/postgres/).
 
 [![clkao/postgres-plv8][docker-pulls-image]][docker-hub-url] [![clkao/postgres-plv8][docker-stars-image]][docker-hub-url] [![clkao/postgres-plv8][docker-size-image]][docker-hub-url] [![clkao/postgres-plv8][docker-layers-image]][docker-hub-url]
 
 ## Tags
 
-- `10-2`, `latest` ([9.6-2/Dockerfile](https://github.com/clkao/docker-postgres-plv8/blob/master/10-2/Dockerfile))
-- `9.6-2`, ([9.6-2/Dockerfile](https://github.com/clkao/docker-postgres-plv8/blob/master/9.6-2/Dockerfile))
+- `10.6-2.3`, `latest` ([10.6-2.3/Dockerfile](https://github.com/clkao/docker-postgres-plv8/blob/master/10.6-2.3/Dockerfile))
+- `10-2` ([9.6-2/Dockerfile](https://github.com/clkao/docker-postgres-plv8/blob/master/10-2/Dockerfile))
+- `9.6-2` ([9.6-2/Dockerfile](https://github.com/clkao/docker-postgres-plv8/blob/master/9.6-2/Dockerfile))
 - `9.6-1.4` ([9.6-1.4/Dockerfile](https://github.com/clkao/docker-postgres-plv8/blob/master/9.6-1.4/Dockerfile))
 - `9.5-2` ([9.5-1.5/Dockerfile](https://github.com/clkao/docker-postgres-plv8/blob/master/9.5-2/Dockerfile))
 - `9.5-1.5` ([9.5-1.5/Dockerfile](https://github.com/clkao/docker-postgres-plv8/blob/master/9.5-1.5/Dockerfile))
@@ -33,7 +34,7 @@ You can optionally create a service using `docker-compose`:
 
 ```yml
 postgres:
-  image: clkao/postgres-plv8:10-2
+  image: clkao/postgres-plv8:10.6-2.3
 ```
 
 ## Image variants
