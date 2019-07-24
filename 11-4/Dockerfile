@@ -1,4 +1,4 @@
-FROM postgres:11.2
+FROM postgres:11.4
 
 LABEL Author="Sebastian Koenig <sebastian.m.koenig@googlemail.com>"
 
@@ -16,7 +16,7 @@ RUN tmpBuildDependencies="build-essential \
     apt-transport-https \
     cmake \
     postgresql-server-dev-$PG_MAJOR" \ 
-	&& buildDependencies="libc++-dev" \
+    && buildDependencies="libc++-dev" \
     && apt-get update \
     && apt-get install -y --no-install-recommends ${tmpBuildDependencies} \
     && apt-get install -y --no-install-recommends ${buildDependencies} \
