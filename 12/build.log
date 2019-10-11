@@ -1,0 +1,966 @@
+Sending build context to Docker daemon  3.584kB
+Step 1/5 : FROM postgres:12
+ ---> f9b3d2f9a593
+Step 2/5 : LABEL Author="Sebastian Koenig <sebastian.m.koenig@googlemail.com>"
+ ---> Using cache
+ ---> 58c0aa2ae430
+Step 3/5 : ENV PLV8_VERSION='2.3.13'     PLV8_SHASUM='1a96c559d98ad757e7494bf7301f0e6b0dd2eec6066ad76ed36cc13fec4f2390'
+ ---> Using cache
+ ---> 57f5920033b6
+Step 4/5 : RUN tmpBuildDependencies="build-essential     ca-certificates     curl     git-core     python     gpp     cpp     pkg-config     apt-transport-https     cmake     postgresql-server-dev-$PG_MAJOR"     && buildDependencies="libc++-dev     libtinfo5     libc++abi-dev"     && apt-get update     && apt-get install -y --no-install-recommends ${tmpBuildDependencies}     && apt-get install -y --no-install-recommends ${buildDependencies}     && mkdir -p /tmp/build     && curl -o /tmp/build/v$PLV8_VERSION.tar.gz -SL "https://github.com/plv8/plv8/archive/v${PLV8_VERSION}.tar.gz"     && cd /tmp/build     && echo $PLV8_SHASUM v$PLV8_VERSION.tar.gz | sha256sum -c     && tar -xzf /tmp/build/v$PLV8_VERSION.tar.gz -C /tmp/build/
+ ---> Using cache
+ ---> 2ee89713f2c8
+Step 5/5 : RUN cd /tmp/build/plv8-$PLV8_VERSION     && make static     && make install     && strip /usr/lib/postgresql/${PG_MAJOR}/lib/plv8-${PLV8_VERSION}.so     && cd /     && apt-get clean     && apt-get remove -y ${tmpBuildDependencies}     && apt-get autoremove -y     && rm -rf /tmp/build /var/lib/apt/lists/*
+ ---> Running in 5e95741130e0
+mkdir -p build
+cd build; git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git
+[91mCloning into 'depot_tools'...
+[0mcd build; fetch v8; cd v8; git checkout 6.4.388.40; gclient sync ; cd build/config ; git cherry-pick 4287a0d364541583a50cc91465330251460d489a ; cd ../.. ; tools/dev/v8gen.py x64.release -- is_component_build=false v8_static_library=true v8_use_snapshot=true v8_use_external_startup_data=false v8_enable_i18n_support=false
+[91mWARNING: Your metrics.cfg file was invalid or nonexistent. A new one will be created.
+[0m1>________ running 'git -c core.deltaBaseCacheLimit=2g clone --no-checkout --progress https://chromium.googlesource.com/v8/v8.git /tmp/build/plv8-2.3.13/build/_gclient_v8_GttzSj' in '/tmp/build/plv8-2.3.13/build'
+1>Cloning into '/tmp/build/plv8-2.3.13/build/_gclient_v8_GttzSj'...
+1>remote: Sending approximately 890.66 MiB ...        
+1>remote: Counting objects: 1           1>remote: Counting objects: 7665, done        
+1>remote: Finding sources:  20% (1/5)           1>remote: Finding sources:  40% (2/5)           1>remote: Finding sources:  60% (3/5)           1>remote: Finding sources:  80% (4/5)           1>remote: Finding sources: 100% (5/5)           1>remote: Finding sources: 100% (5/5)        
+1>Receiving objects:   0% (1/708993)   1>Receiving objects:   1% (7090/708993)   1>Receiving objects:   2% (14180/708993), 4.56 MiB | 9.12 MiB/s   1>Receiving objects:   3% (21270/708993), 4.56 MiB | 9.12 MiB/s   1>Receiving objects:   3% (22564/708993), 4.56 MiB | 9.12 MiB/s   1>Receiving objects:   4% (28360/708993), 9.17 MiB | 9.17 MiB/s   1>Receiving objects:   5% (35450/708993), 13.75 MiB | 9.16 MiB/s   1>Receiving objects:   6% (42540/708993), 13.75 MiB | 9.16 MiB/s   1>Receiving objects:   6% (42845/708993), 13.75 MiB | 9.16 MiB/s   1>Receiving objects:   7% (49630/708993), 18.34 MiB | 9.16 MiB/s   1>Receiving objects:   8% (56720/708993), 22.91 MiB | 9.16 MiB/s   1>Receiving objects:   9% (63810/708993), 22.91 MiB | 9.16 MiB/s   1>Receiving objects:   9% (68020/708993), 22.91 MiB | 9.16 MiB/s   1>Receiving objects:  10% (70900/708993), 27.50 MiB | 9.16 MiB/s   1>Receiving objects:  11% (77990/708993), 27.50 MiB | 9.16 MiB/s   1>Receiving objects:  12% (85080/708993), 32.10 MiB | 9.17 MiB/s   1>Receiving objects:  12% (87179/708993), 32.10 MiB | 9.17 MiB/s   1>Receiving objects:  13% (92170/708993), 39.24 MiB | 8.71 MiB/s   1>Receiving objects:  13% (98208/708993), 39.24 MiB | 8.71 MiB/s   1>Receiving objects:  14% (99260/708993), 43.80 MiB | 8.71 MiB/s   1>Receiving objects:  15% (106349/708993), 48.41 MiB | 8.71 MiB/s   1>Receiving objects:  15% (111686/708993), 48.41 MiB | 8.71 MiB/s   1>Receiving objects:  16% (113439/708993), 52.99 MiB | 8.71 MiB/s   1>Receiving objects:  17% (120529/708993), 57.59 MiB | 8.72 MiB/s   1>Receiving objects:  17% (125218/708993), 57.59 MiB | 8.72 MiB/s   1>Receiving objects:  18% (127619/708993), 62.17 MiB | 8.71 MiB/s   1>Receiving objects:  19% (134709/708993), 66.78 MiB | 8.72 MiB/s   1>Receiving objects:  19% (139743/708993), 66.78 MiB | 8.72 MiB/s   1>Receiving objects:  20% (141799/708993), 71.36 MiB | 8.71 MiB/s   1>Receiving objects:  20% (148850/708993), 75.96 MiB | 8.72 MiB/s   1>Receiving objects:  21% (148889/708993), 75.96 MiB | 8.72 MiB/s   1>Receiving objects:  22% (155979/708993), 77.06 MiB | 8.39 MiB/s   1>Receiving objects:  22% (161623/708993), 81.66 MiB | 8.40 MiB/s   1>Receiving objects:  23% (163069/708993), 86.23 MiB | 8.39 MiB/s   1>Receiving objects:  24% (170159/708993), 90.85 MiB | 8.40 MiB/s   1>Receiving objects:  24% (175437/708993), 90.85 MiB | 8.40 MiB/s   1>Receiving objects:  25% (177249/708993), 95.47 MiB | 8.40 MiB/s   1>Receiving objects:  26% (184339/708993), 95.47 MiB | 8.40 MiB/s   1>Receiving objects:  27% (191429/708993), 100.03 MiB | 8.40 MiB/s   1>Receiving objects:  27% (193616/708993), 100.03 MiB | 8.40 MiB/s   1>Receiving objects:  28% (198519/708993), 104.66 MiB | 8.39 MiB/s   1>Receiving objects:  29% (205608/708993), 109.28 MiB | 8.41 MiB/s   1>Receiving objects:  30% (212698/708993), 109.28 MiB | 8.41 MiB/s   1>Receiving objects:  30% (216463/708993), 109.28 MiB | 8.41 MiB/s   1>Receiving objects:  31% (219788/708993), 113.84 MiB | 8.40 MiB/s   1>Receiving objects:  32% (226878/708993), 113.84 MiB | 8.40 MiB/s   1>Receiving objects:  33% (233968/708993), 118.45 MiB | 9.17 MiB/s   1>Receiving objects:  33% (239371/708993), 118.45 MiB | 9.17 MiB/s   1>Receiving objects:  34% (241058/708993), 123.03 MiB | 9.16 MiB/s   1>Receiving objects:  35% (248148/708993), 125.56 MiB | 8.72 MiB/s   1>Receiving objects:  36% (255238/708993), 125.56 MiB | 8.72 MiB/s   1>Receiving objects:  36% (256228/708993), 125.56 MiB | 8.72 MiB/s   1>Receiving objects:  37% (262328/708993), 130.15 MiB | 8.72 MiB/s   1>Receiving objects:  38% (269418/708993), 134.75 MiB | 8.71 MiB/s   1>Receiving objects:  38% (276172/708993), 134.75 MiB | 8.71 MiB/s   1>Receiving objects:  39% (276508/708993), 134.75 MiB | 8.71 MiB/s   1>Receiving objects:  40% (283598/708993), 139.33 MiB | 8.72 MiB/s   1>Receiving objects:  41% (290688/708993), 143.96 MiB | 8.72 MiB/s   1>Receiving objects:  42% (297778/708993), 143.96 MiB | 8.72 MiB/s   1>Receiving objects:  43% (304867/708993), 143.96 MiB | 8.72 MiB/s   1>Receiving objects:  44% (311957/708993), 143.96 MiB | 8.72 MiB/s   1>Receiving objects:  45% (319047/708993), 143.96 MiB | 8.72 MiB/s   1>Receiving objects:  45% (321529/708993), 143.96 MiB | 8.72 MiB/s   1>Receiving objects:  46% (326137/708993), 143.96 MiB | 8.72 MiB/s   1>Receiving objects:  47% (333227/708993), 148.58 MiB | 8.71 MiB/s   1>Receiving objects:  48% (340317/708993), 148.58 MiB | 8.71 MiB/s   1>Receiving objects:  49% (347407/708993), 148.58 MiB | 8.71 MiB/s   1>Receiving objects:  50% (354497/708993), 148.58 MiB | 8.71 MiB/s   1>Receiving objects:  51% (361587/708993), 148.58 MiB | 8.71 MiB/s   1>Receiving objects:  52% (368677/708993), 153.17 MiB | 8.72 MiB/s   1>Receiving objects:  53% (375767/708993), 153.17 MiB | 8.72 MiB/s   1>Receiving objects:  53% (380503/708993), 153.17 MiB | 8.72 MiB/s   1>Receiving objects:  54% (382857/708993), 162.33 MiB | 8.71 MiB/s   1>Receiving objects:  54% (383559/708993), 166.92 MiB | 9.17 MiB/s   1>Receiving objects:  54% (387302/708993), 171.51 MiB | 9.17 MiB/s   1>Receiving objects:  55% (389947/708993), 176.11 MiB | 9.17 MiB/s   1>Receiving objects:  56% (397037/708993), 180.70 MiB | 9.17 MiB/s   1>Receiving objects:  56% (397758/708993), 180.70 MiB | 9.17 MiB/s   1>Receiving objects:  56% (400637/708993), 189.88 MiB | 9.17 MiB/s   1>Receiving objects:  56% (402913/708993), 199.07 MiB | 9.17 MiB/s   1>Receiving objects:  57% (404127/708993), 203.65 MiB | 9.17 MiB/s   1>Receiving objects:  57% (406484/708993), 208.25 MiB | 9.17 MiB/s   1>Receiving objects:  57% (408419/708993), 217.37 MiB | 8.73 MiB/s   1>Receiving objects:  58% (411216/708993), 221.98 MiB | 8.74 MiB/s   1>Receiving objects:  58% (412288/708993), 226.56 MiB | 8.74 MiB/s   1>Receiving objects:  58% (414952/708993), 235.80 MiB | 8.73 MiB/s   1>Receiving objects:  59% (418306/708993), 244.95 MiB | 8.73 MiB/s   1>Receiving objects:  59% (418552/708993), 244.95 MiB | 8.73 MiB/s   1>Receiving objects:  59% (421536/708993), 254.15 MiB | 8.74 MiB/s   1>Receiving objects:  59% (424040/708993), 263.30 MiB | 9.17 MiB/s   1>Receiving objects:  60% (425396/708993), 267.89 MiB | 9.17 MiB/s   1>Receiving objects:  60% (427710/708993), 272.48 MiB | 9.17 MiB/s   1>Receiving objects:  60% (431089/708993), 281.66 MiB | 9.17 MiB/s   1>Receiving objects:  61% (432486/708993), 286.29 MiB | 9.17 MiB/s   1>Receiving objects:  61% (433450/708993), 290.89 MiB | 9.17 MiB/s   1>Receiving objects:  61% (436514/708993), 300.05 MiB | 9.17 MiB/s   1>Receiving objects:  61% (439360/708993), 309.22 MiB | 9.06 MiB/s   1>Receiving objects:  62% (439576/708993), 309.22 MiB | 9.06 MiB/s   1>Receiving objects:  62% (441412/708993), 316.84 MiB | 8.71 MiB/s   1>Receiving objects:  62% (443550/708993), 326.02 MiB | 8.72 MiB/s   1>Receiving objects:  62% (446340/708993), 335.21 MiB | 8.72 MiB/s   1>Receiving objects:  63% (446666/708993), 335.21 MiB | 8.72 MiB/s   1>Receiving objects:  63% (448542/708993), 344.37 MiB | 8.72 MiB/s   1>Receiving objects:  63% (451317/708993), 353.56 MiB | 9.17 MiB/s   1>Receiving objects:  63% (453461/708993), 362.76 MiB | 9.17 MiB/s   1>Receiving objects:  64% (453756/708993), 362.76 MiB | 9.17 MiB/s   1>Receiving objects:  64% (455638/708993), 371.95 MiB | 9.17 MiB/s   1>Receiving objects:  64% (458796/708993), 381.13 MiB | 9.17 MiB/s   1>Receiving objects:  64% (460717/708993), 390.31 MiB | 9.18 MiB/s   1>Receiving objects:  65% (460846/708993), 390.31 MiB | 9.18 MiB/s   1>Receiving objects:  65% (462573/708993), 399.49 MiB | 9.18 MiB/s   1>Receiving objects:  65% (464180/708993), 406.58 MiB | 8.71 MiB/s   1>Receiving objects:  65% (466231/708993), 415.79 MiB | 8.71 MiB/s   1>Receiving objects:  66% (467936/708993), 420.37 MiB | 8.71 MiB/s   1>Receiving objects:  66% (468174/708993), 424.97 MiB | 8.71 MiB/s   1>Receiving objects:  66% (470932/708993), 434.14 MiB | 8.71 MiB/s   1>Receiving objects:  66% (473215/708993), 443.36 MiB | 9.17 MiB/s   1>Receiving objects:  67% (475026/708993), 447.99 MiB | 9.17 MiB/s   1>Receiving objects:  67% (476051/708993), 452.60 MiB | 9.18 MiB/s   1>Receiving objects:  67% (478610/708993), 461.77 MiB | 9.18 MiB/s   1>Receiving objects:  67% (481370/708993), 470.94 MiB | 9.17 MiB/s   1>Receiving objects:  68% (482116/708993), 470.94 MiB | 9.17 MiB/s   1>Receiving objects:  68% (484411/708993), 480.16 MiB | 9.18 MiB/s   1>Receiving objects:  68% (487134/708993), 489.29 MiB | 9.16 MiB/s   1>Receiving objects:  68% (488324/708993), 496.91 MiB | 8.72 MiB/s   1>Receiving objects:  69% (489206/708993), 501.48 MiB | 8.71 MiB/s   1>Receiving objects:  69% (489524/708993), 506.09 MiB | 8.72 MiB/s   1>Receiving objects:  69% (491805/708993), 515.27 MiB | 8.72 MiB/s   1>Receiving objects:  69% (493585/708993), 524.44 MiB | 8.72 MiB/s   1>Receiving objects:  69% (494745/708993), 533.65 MiB | 8.92 MiB/s   1>Receiving objects:  69% (496235/708993), 542.83 MiB | 9.17 MiB/s   1>Receiving objects:  70% (496296/708993), 542.83 MiB | 9.17 MiB/s   1>Receiving objects:  70% (499181/708993), 552.05 MiB | 9.17 MiB/s   1>Receiving objects:  70% (500951/708993), 556.64 MiB | 9.16 MiB/s   1>Receiving objects:  70% (502316/708993), 565.82 MiB | 9.16 MiB/s   1>Receiving objects:  71% (503386/708993), 575.01 MiB | 9.17 MiB/s   1>Receiving objects:  71% (505122/708993), 575.01 MiB | 9.17 MiB/s   1>Receiving objects:  71% (509528/708993), 586.73 MiB | 8.72 MiB/s   1>Receiving objects:  72% (510475/708993), 586.73 MiB | 8.72 MiB/s   1>Receiving objects:  72% (511724/708993), 591.31 MiB | 8.71 MiB/s   1>Receiving objects:  72% (513777/708993), 600.50 MiB | 8.71 MiB/s   1>Receiving objects:  72% (517440/708993), 609.70 MiB | 8.71 MiB/s   1>Receiving objects:  73% (517565/708993), 614.31 MiB | 8.71 MiB/s   1>Receiving objects:  73% (519388/708993), 618.92 MiB | 8.71 MiB/s   1>Receiving objects:  74% (524655/708993), 623.49 MiB | 8.71 MiB/s   1>Receiving objects:  74% (526829/708993), 628.09 MiB | 9.17 MiB/s   1>Receiving objects:  74% (529784/708993), 637.30 MiB | 9.16 MiB/s   1>Receiving objects:  75% (531745/708993), 646.48 MiB | 9.17 MiB/s   1>Receiving objects:  75% (531762/708993), 646.48 MiB | 9.17 MiB/s   1>Receiving objects:  75% (534156/708993), 655.67 MiB | 9.17 MiB/s   1>Receiving objects:  75% (536817/708993), 664.85 MiB | 9.17 MiB/s   1>Receiving objects:  76% (538835/708993), 669.41 MiB | 9.16 MiB/s   1>Receiving objects:  76% (541536/708993), 677.54 MiB | 8.72 MiB/s   1>Receiving objects:  76% (545433/708993), 682.16 MiB | 8.72 MiB/s   1>Receiving objects:  77% (545925/708993), 682.16 MiB | 8.72 MiB/s   1>Receiving objects:  77% (551416/708993), 691.34 MiB | 8.72 MiB/s   1>Receiving objects:  78% (553015/708993), 695.94 MiB | 8.73 MiB/s   1>Receiving objects:  78% (557593/708993), 700.53 MiB | 8.72 MiB/s   1>Receiving objects:  79% (560105/708993), 709.75 MiB | 8.73 MiB/s   1>Receiving objects:  79% (560641/708993), 709.75 MiB | 8.73 MiB/s   1>Receiving objects:  79% (563646/708993), 718.93 MiB | 9.17 MiB/s   1>Receiving objects:  80% (567195/708993), 728.09 MiB | 9.17 MiB/s   1>Receiving objects:  80% (568351/708993), 728.09 MiB | 9.17 MiB/s   1>Receiving objects:  80% (572045/708993), 737.27 MiB | 9.17 MiB/s   1>Receiving objects:  81% (574285/708993), 741.89 MiB | 9.18 MiB/s   1>Receiving objects:  81% (577210/708993), 746.45 MiB | 9.17 MiB/s   1>Receiving objects:  82% (581375/708993), 755.64 MiB | 9.17 MiB/s   1>Receiving objects:  82% (582597/708993), 755.64 MiB | 9.17 MiB/s   1>Receiving objects:  82% (588297/708993), 764.82 MiB | 9.17 MiB/s   1>Receiving objects:  83% (588465/708993), 764.82 MiB | 9.17 MiB/s   1>Receiving objects:  83% (591720/708993), 773.07 MiB | 8.72 MiB/s   1>Receiving objects:  83% (594897/708993), 782.31 MiB | 8.73 MiB/s   1>Receiving objects:  84% (595555/708993), 782.31 MiB | 8.73 MiB/s   1>Receiving objects:  84% (598604/708993), 791.44 MiB | 8.72 MiB/s   1>Receiving objects:  84% (602478/708993), 800.68 MiB | 8.72 MiB/s   1>Receiving objects:  85% (602645/708993), 800.68 MiB | 8.72 MiB/s   1>Receiving objects:  85% (606994/708993), 809.87 MiB | 8.97 MiB/s   1>Receiving objects:  86% (609734/708993), 814.48 MiB | 9.17 MiB/s   1>Receiving objects:  86% (611035/708993), 819.04 MiB | 9.17 MiB/s   1>Receiving objects:  86% (615984/708993), 828.24 MiB | 9.16 MiB/s   1>Receiving objects:  87% (616824/708993), 828.24 MiB | 9.16 MiB/s   1>Receiving objects:  87% (623310/708993), 836.12 MiB | 8.81 MiB/s   1>Receiving objects:  88% (623914/708993), 836.12 MiB | 8.81 MiB/s   1>Receiving objects:  89% (631004/708993), 842.23 MiB | 9.15 MiB/s   1>Receiving objects:  89% (634470/708993), 846.83 MiB | 9.14 MiB/s   1>Receiving objects:  90% (638094/708993), 846.83 MiB | 9.14 MiB/s   1>Receiving objects:  91% (645184/708993), 851.42 MiB | 9.15 MiB/s   1>Receiving objects:  91% (650022/708993), 855.98 MiB | 9.14 MiB/s   1>Receiving objects:  92% (652274/708993), 855.98 MiB | 9.14 MiB/s   1>Receiving objects:  93% (659364/708993), 863.16 MiB | 8.69 MiB/s   1>Receiving objects:  93% (660459/708993), 863.16 MiB | 8.69 MiB/s   1>Receiving objects:  94% (666454/708993), 863.16 MiB | 8.69 MiB/s   1>Receiving objects:  95% (673544/708993), 867.79 MiB | 8.69 MiB/s   1>Receiving objects:  95% (675201/708993), 872.41 MiB | 8.69 MiB/s   1>Receiving objects:  96% (680634/708993), 876.97 MiB | 9.05 MiB/s   1>Receiving objects:  97% (687724/708993), 881.58 MiB | 8.72 MiB/s   1>Receiving objects:  97% (688598/708993), 881.58 MiB | 8.72 MiB/s   1>Receiving objects:  98% (694814/708993), 881.58 MiB | 8.72 MiB/s   1>Receiving objects:  99% (701904/708993), 886.16 MiB | 8.71 MiB/s   1>remote: Total 708993 (delta 564172), reused 708989 (delta 564172)        
+1>Receiving objects: 100% (708993/708993), 886.16 MiB | 8.71 MiB/s   1>Receiving objects: 100% (708993/708993), 890.56 MiB | 8.92 MiB/s, done.
+1>Resolving deltas:   0% (0/564172)   1>Resolving deltas:   1% (5683/564172)   1>Resolving deltas:   2% (11289/564172)   1>Resolving deltas:   3% (16965/564172)   1>Resolving deltas:   4% (22579/564172)   1>Resolving deltas:   5% (28220/564172)   1>Resolving deltas:   6% (33854/564172)   1>Resolving deltas:   6% (38605/564172)   1>Resolving deltas:   7% (39642/564172)   1>Resolving deltas:   8% (45309/564172)   1>Resolving deltas:   9% (50902/564172)   1>Resolving deltas:  10% (56423/564172)   1>Resolving deltas:  11% (62063/564172)   1>Resolving deltas:  12% (67702/564172)   1>Resolving deltas:  13% (73393/564172)   1>Resolving deltas:  13% (75992/564172)   1>Resolving deltas:  14% (78986/564172)   1>Resolving deltas:  15% (84644/564172)   1>Resolving deltas:  16% (90272/564172)   1>Resolving deltas:  17% (95954/564172)   1>Resolving deltas:  18% (101623/564172)   1>Resolving deltas:  19% (107205/564172)   1>Resolving deltas:  20% (112901/564172)   1>Resolving deltas:  20% (116327/564172)   1>Resolving deltas:  21% (118530/564172)   1>Resolving deltas:  22% (124137/564172)   1>Resolving deltas:  23% (129761/564172)   1>Resolving deltas:  24% (135432/564172)   1>Resolving deltas:  25% (141057/564172)   1>Resolving deltas:  26% (146687/564172)   1>Resolving deltas:  27% (152330/564172)   1>Resolving deltas:  27% (156757/564172)   1>Resolving deltas:  28% (157971/564172)   1>Resolving deltas:  29% (163644/564172)   1>Resolving deltas:  30% (169283/564172)   1>Resolving deltas:  31% (176206/564172)   1>Resolving deltas:  32% (180536/564172)   1>Resolving deltas:  33% (186243/564172)   1>Resolving deltas:  34% (191823/564172)   1>Resolving deltas:  34% (195692/564172)   1>Resolving deltas:  35% (197483/564172)   1>Resolving deltas:  36% (203137/564172)   1>Resolving deltas:  37% (209159/564172)   1>Resolving deltas:  38% (214471/564172)   1>Resolving deltas:  39% (220296/564172)   1>Resolving deltas:  40% (225880/564172)   1>Resolving deltas:  41% (232595/564172)   1>Resolving deltas:  42% (237155/564172)   1>Resolving deltas:  43% (242860/564172)   1>Resolving deltas:  44% (248674/564172)   1>Resolving deltas:  45% (254073/564172)   1>Resolving deltas:  46% (259608/564172)   1>Resolving deltas:  47% (265177/564172)   1>Resolving deltas:  48% (271676/564172)   1>Resolving deltas:  48% (272560/564172)   1>Resolving deltas:  49% (276486/564172)   1>Resolving deltas:  49% (280948/564172)   1>Resolving deltas:  50% (282116/564172)   1>Resolving deltas:  50% (285383/564172)   1>Resolving deltas:  51% (287880/564172)   1>Resolving deltas:  51% (289438/564172)   1>Resolving deltas:  52% (293380/564172)   1>Resolving deltas:  52% (294750/564172)   1>Resolving deltas:  53% (300432/564172)   1>Resolving deltas:  54% (306668/564172)   1>Resolving deltas:  55% (310702/564172)   1>Resolving deltas:  56% (315947/564172)   1>Resolving deltas:  56% (316171/564172)   1>Resolving deltas:  57% (321674/564172)   1>Resolving deltas:  57% (323793/564172)   1>Resolving deltas:  58% (327224/564172)   1>Resolving deltas:  59% (332974/564172)   1>Resolving deltas:  60% (338512/564172)   1>Resolving deltas:  60% (340946/564172)   1>Resolving deltas:  61% (344148/564172)   1>Resolving deltas:  61% (344906/564172)   1>Resolving deltas:  61% (348634/564172)   1>Resolving deltas:  62% (349791/564172)   1>Resolving deltas:  62% (351279/564172)   1>Resolving deltas:  62% (354696/564172)   1>Resolving deltas:  63% (355429/564172)   1>Resolving deltas:  63% (357933/564172)   1>Resolving deltas:  63% (360595/564172)   1>Resolving deltas:  64% (361105/564172)   1>Resolving deltas:  64% (363758/564172)   1>Resolving deltas:  65% (366732/564172)   1>Resolving deltas:  65% (367640/564172)   1>Resolving deltas:  65% (371410/564172)   1>Resolving deltas:  66% (372364/564172)   1>Resolving deltas:  66% (375417/564172)   1>Resolving deltas:  67% (378000/564172)   1>Resolving deltas:  67% (380524/564172)   1>Resolving deltas:  68% (383639/564172)   1>Resolving deltas:  68% (384447/564172)   1>Resolving deltas:  68% (387528/564172)   1>Resolving deltas:  69% (390304/564172)   1>Resolving deltas:  69% (391142/564172)   1>Resolving deltas:  69% (393972/564172)   1>Resolving deltas:  70% (394937/564172)   1>Resolving deltas:  70% (397046/564172)   1>Resolving deltas:  70% (400311/564172)   1>Resolving deltas:  71% (400566/564172)   1>Resolving deltas:  71% (405131/564172)   1>Resolving deltas:  72% (406212/564172)   1>Resolving deltas:  72% (408054/564172)   1>Resolving deltas:  72% (410366/564172)   1>Resolving deltas:  72% (411515/564172)   1>Resolving deltas:  73% (411847/564172)   1>Resolving deltas:  73% (413220/564172)   1>Resolving deltas:  73% (415142/564172)   1>Resolving deltas:  73% (415964/564172)   1>Resolving deltas:  73% (417263/564172)   1>Resolving deltas:  74% (417511/564172)   1>Resolving deltas:  74% (418867/564172)   1>Resolving deltas:  74% (420490/564172)   1>Resolving deltas:  74% (421514/564172)   1>Resolving deltas:  74% (422828/564172)   1>Resolving deltas:  75% (423302/564172)   1>Resolving deltas:  75% (424657/564172)   1>Resolving deltas:  75% (426968/564172)   1>Resolving deltas:  75% (427923/564172)   1>Resolving deltas:  76% (428784/564172)   1>Resolving deltas:  76% (428853/564172)   1>Resolving deltas:  76% (431278/564172)   1>Resolving deltas:  76% (433890/564172)   1>Resolving deltas:  77% (434463/564172)   1>Resolving deltas:  77% (436348/564172)   1>Resolving deltas:  77% (438145/564172)   1>Resolving deltas:  78% (440298/564172)   1>Resolving deltas:  78% (441862/564172)   1>Resolving deltas:  78% (445645/564172)   1>Resolving deltas:  79% (445716/564172)   1>Resolving deltas:  79% (448430/564172)   1>Resolving deltas:  80% (451342/564172)   1>Resolving deltas:  80% (454267/564172)   1>Resolving deltas:  81% (456990/564172)   1>Resolving deltas:  81% (460728/564172)   1>Resolving deltas:  82% (462624/564172)   1>Resolving deltas:  82% (464480/564172)   1>Resolving deltas:  83% (468275/564172)   1>Resolving deltas:  83% (470388/564172)   1>Resolving deltas:  84% (473926/564172)   1>Resolving deltas:  84% (475880/564172)   1>Resolving deltas:  84% (478627/564172)   1>Resolving deltas:  85% (479576/564172)   1>Resolving deltas:  85% (482809/564172)   1>Resolving deltas:  86% (485251/564172)   1>Resolving deltas:  86% (487786/564172)   1>Resolving deltas:  87% (491208/564172)   1>Resolving deltas:  87% (494063/564172)   1>Resolving deltas:  87% (494811/564172)   1>Resolving deltas:  88% (496594/564172)   1>Resolving deltas:  88% (497257/564172)   1>Resolving deltas:  88% (500440/564172)   1>Resolving deltas:  89% (502119/564172)   1>Resolving deltas:  89% (505205/564172)   1>Resolving deltas:  90% (507757/564172)   1>Resolving deltas:  90% (510434/564172)   1>Resolving deltas:  91% (513410/564172)   1>Resolving deltas:  91% (513459/564172)   1>Resolving deltas:  92% (519098/564172)   1>Resolving deltas:  92% (522326/564172)   1>Resolving deltas:  93% (524684/564172)   1>Resolving deltas:  93% (525596/564172)   1>Resolving deltas:  93% (527341/564172)   1>Resolving deltas:  93% (530045/564172)   1>Resolving deltas:  94% (530414/564172)   1>Resolving deltas:  94% (532272/564172)   1>Resolving deltas:  95% (535981/564172)   1>Resolving deltas:  95% (536344/564172)   1>Resolving deltas:  95% (541283/564172)   1>Resolving deltas:  96% (541869/564172)   1>Resolving deltas:  96% (544977/564172)   1>Resolving deltas:  96% (546693/564172)   1>Resolving deltas:  97% (547441/564172)   1>Resolving deltas:  97% (551497/564172)   1>Resolving deltas:  98% (552963/564172)   1>Resolving deltas:  98% (557763/564172)   1>Resolving deltas:  99% (558726/564172)   1>Resolving deltas:  99% (561961/564172)   1>Resolving deltas:  99% (562735/564172)   1>Resolving deltas: 100% (564172/564172)   1>Resolving deltas: 100% (564172/564172), done.
+[0:03:36] Still working on:
+[0:03:36]   v8
+________ running 'vpython v8/third_party/depot_tools/update_depot_tools_toggle.py --disable' in '/tmp/build/plv8-2.3.13/build'
+________ running 'vpython v8/build/landmines.py --landmine-scripts v8/tools/get_landmines.py' in '/tmp/build/plv8-2.3.13/build'
+________ running 'download_from_google_storage --no_resume --platform=linux* --no_auth --bucket chromium-clang-format -s v8/buildtools/linux64/clang-format.sha1' in '/tmp/build/plv8-2.3.13/build'
+0> Downloading v8/buildtools/linux64/clang-format...
+Downloading 1 files took 21.943898 second(s)
+Hook 'download_from_google_storage --no_resume '--platform=linux*' --no_auth --bucket chromium-clang-format -s v8/buildtools/linux64/clang-format.sha1' took 22.00 secs
+________ running 'download_from_google_storage --no_resume --no_auth -u --bucket v8-wasm-spec-tests -s v8/test/wasm-spec-tests/tests.tar.gz.sha1' in '/tmp/build/plv8-2.3.13/build'
+0> Downloading v8/test/wasm-spec-tests/tests.tar.gz...
+0> Extracting 460 entries from v8/test/wasm-spec-tests/tests.tar.gz to v8/test/wasm-spec-tests/tests
+Downloading 1 files took 6.848377 second(s)
+________ running 'download_from_google_storage --no_resume --no_auth -u --bucket v8-wasm-spec-tests -s v8/test/wasm-js/tests.tar.gz.sha1' in '/tmp/build/plv8-2.3.13/build'
+0> Downloading v8/test/wasm-js/tests.tar.gz...
+0> Extracting 110 entries from v8/test/wasm-js/tests.tar.gz to v8/test/wasm-js/tests
+Downloading 1 files took 6.245021 second(s)
+________ running 'vpython v8/build/linux/sysroot_scripts/install-sysroot.py --arch=x86' in '/tmp/build/plv8-2.3.13/build'
+Installing Debian sid i386 root image: /tmp/build/plv8-2.3.13/build/v8/build/linux/debian_sid_i386-sysroot
+Downloading https://commondatastorage.googleapis.com/chrome-linux-sysroot/toolchain/9e6279438ece6fb42b5333ca90d5e9d0c188a403/debian_sid_i386_sysroot.tar.xz
+Hook 'vpython v8/build/linux/sysroot_scripts/install-sysroot.py --arch=x86' took 14.17 secs
+________ running 'vpython v8/build/linux/sysroot_scripts/install-sysroot.py --arch=x64' in '/tmp/build/plv8-2.3.13/build'
+Installing Debian sid amd64 root image: /tmp/build/plv8-2.3.13/build/v8/build/linux/debian_sid_amd64-sysroot
+Downloading https://commondatastorage.googleapis.com/chrome-linux-sysroot/toolchain/e7c53f04bd88d29d075bfd1f62b073aeb69cbe09/debian_sid_amd64_sysroot.tar.xz
+Hook 'vpython v8/build/linux/sysroot_scripts/install-sysroot.py --arch=x64' took 13.52 secs
+________ running 'vpython v8/third_party/binutils/download.py' in '/tmp/build/plv8-2.3.13/build'
+0> Downloading /tmp/build/plv8-2.3.13/build/v8/third_party/binutils/Linux_x64/binutils.tar.bz2...
+Downloading 1 files took 6.796926 second(s)
+Downloading /tmp/build/plv8-2.3.13/build/v8/third_party/binutils/Linux_x64/binutils.tar.bz2
+Extracting /tmp/build/plv8-2.3.13/build/v8/third_party/binutils/Linux_x64/binutils.tar.bz2
+________ running 'vpython v8/tools/clang/scripts/update.py' in '/tmp/build/plv8-2.3.13/build'
+Downloading https://commondatastorage.googleapis.com/chromium-browser-clang/Linux_x64/clang-373424-64a362e7-1.tgz .......... Done.
+________ running 'vpython v8/build/util/lastchange.py -o v8/build/util/LASTCHANGE' in '/tmp/build/plv8-2.3.13/build'
+Running: gclient root
+Running: gclient config --spec 'solutions = [
+  {
+    "url": "https://chromium.googlesource.com/v8/v8.git",
+    "managed": False,
+    "name": "v8",
+    "deps_file": "DEPS",
+    "custom_deps": {},
+  },
+]
+'
+Running: gclient sync --with_branch_heads
+Running: git submodule foreach 'git config -f $toplevel/.git/config submodule.$name.ignore all'
+Running: git config --add remote.origin.fetch '+refs/tags/*:refs/tags/*'
+Running: git config diff.ignoreSubmodules all
+[91mPrevious HEAD position was 947a124e47 [runtime] Fix CloneObject for all in-place repr changes
+[0m[91mHEAD is now at d481edab15 Version 6.4.388.40
+[0m
+WARNING: 'v8/third_party/googletest/src' is no longer part of this client.
+It is recommended that you manually remove it or use 'gclient sync -D' next time.
+
+WARNING: 'v8/third_party/perfetto' is no longer part of this client.
+It is recommended that you manually remove it or use 'gclient sync -D' next time.
+
+WARNING: 'v8/third_party/protobuf' is no longer part of this client.
+It is recommended that you manually remove it or use 'gclient sync -D' next time.
+
+WARNING: 'v8/third_party/depot_tools' is no longer part of this client.
+It is recommended that you manually remove it or use 'gclient sync -D' next time.
+________ running 'vpython v8/gypfiles/landmines.py' in '/tmp/build/plv8-2.3.13/build'
+Clobbering due to:
+--- old_landmines	Fri Oct 11 17:35:39 2019
++++ new_landmines	Fri Oct 11 17:37:26 2019
+@@ -18,18 +17,0 @@
+-Clobber to possibly resolve build failure on Misc V8 Linux gcc.
+-Builders switching from make to ninja will clobber on this.
+-Need to clobber everything due to an IDL change in r154579 (blink)
+-Need to clobber everything due to gen file moves in r175513 (Blink)
+-Clobber to get rid of obselete test plugin after r248358
+-Clobber to rebuild GN files for V8
+-Clobber to get rid of stale generated mojom.h files
+-Need to clobber everything due to build_nexe change in nacl r13424
+-[chromium-dev] PSA: clobber build needed for IDR_INSPECTOR_* compil...
+-blink_resources.grd changed: crbug.com/400860
+-ninja dependency cycle: crbug.com/408192
+-Clobber to fix missing NaCl gyp dependencies (crbug.com/427427).
+-Another clobber for missing NaCl gyp deps (crbug.com/427427).
+-Clobber to fix GN not picking up increased ID range (crbug.com/444902)
+-Remove NaCl toolchains from the output dir (crbug.com/456902)
+-CLobber all to fix GN breakage (crbug.com/736215)
+-The Great Blink mv for source files (crbug.com/768828)
+-Clobber to workaround buggy .ninja_deps cycle (crbug.com/934404)
+________ running 'download_from_google_storage --no_resume --platform=linux* --no_auth --bucket chromium-clang-format -s v8/buildtools/linux64/clang-format.sha1' in '/tmp/build/plv8-2.3.13/build'
+0> Downloading v8/buildtools/linux64/clang-format...
+Downloading 1 files took 6.353664 second(s)
+________ running 'vpython v8/tools/gcmole/download_gcmole_tools.py' in '/tmp/build/plv8-2.3.13/build'
+________ running 'vpython v8/tools/jsfunfuzz/download_jsfunfuzz.py' in '/tmp/build/plv8-2.3.13/build'
+________ running 'download_from_google_storage --no_resume --platform=linux* --no_auth --bucket chromium-luci -d v8/tools/luci-go/linux64' in '/tmp/build/plv8-2.3.13/build'
+0> Downloading v8/tools/luci-go/linux64/isolate...
+Downloading 1 files took 7.434530 second(s)
+________ running 'download_from_google_storage --no_resume --platform=linux* --no_auth --bucket chromium-gn -s v8/buildtools/linux64/gn.sha1' in '/tmp/build/plv8-2.3.13/build'
+0> Downloading v8/buildtools/linux64/gn...
+Downloading 1 files took 6.253760 second(s)
+________ running 'download_from_google_storage --no_resume --no_auth -u --bucket v8-wasm-spec-tests -s v8/test/wasm-spec-tests/tests.tar.gz.sha1' in '/tmp/build/plv8-2.3.13/build'
+0> Downloading v8/test/wasm-spec-tests/tests.tar.gz...
+0> Removed v8/test/wasm-spec-tests/tests...
+0> Extracting 65 entries from v8/test/wasm-spec-tests/tests.tar.gz to v8/test/wasm-spec-tests/tests
+Downloading 1 files took 6.533881 second(s)
+________ running 'download_from_google_storage --no_resume --no_auth -u --bucket chromium-v8-closure-compiler -s v8/src/inspector/build/closure-compiler.tar.gz.sha1' in '/tmp/build/plv8-2.3.13/build'
+0> Downloading v8/src/inspector/build/closure-compiler.tar.gz...
+0> Extracting 4 entries from v8/src/inspector/build/closure-compiler.tar.gz to v8/src/inspector/build/closure-compiler
+Downloading 1 files took 7.140543 second(s)
+________ running 'vpython v8/build/linux/sysroot_scripts/install-sysroot.py --running-as-hook' in '/tmp/build/plv8-2.3.13/build'
+Installing Debian Stretch amd64 root image: /tmp/build/plv8-2.3.13/build/v8/build/linux/debian_stretch_amd64-sysroot
+Downloading https://commondatastorage.googleapis.com/chrome-linux-sysroot/toolchain/2202c161310ffde63729f29d27fe7bb24a0bc540/debian_stretch_amd64_sysroot.tar.xz
+Installing Debian Stretch i386 root image: /tmp/build/plv8-2.3.13/build/v8/build/linux/debian_stretch_i386-sysroot
+Downloading https://commondatastorage.googleapis.com/chrome-linux-sysroot/toolchain/2202c161310ffde63729f29d27fe7bb24a0bc540/debian_stretch_i386_sysroot.tar.xz
+Hook 'vpython v8/build/linux/sysroot_scripts/install-sysroot.py --running-as-hook' took 15.36 secs
+________ running 'vpython v8/third_party/binutils/download.py' in '/tmp/build/plv8-2.3.13/build'
+0> Downloading /tmp/build/plv8-2.3.13/build/v8/third_party/binutils/Linux_x64/binutils.tar.bz2...
+Downloading 1 files took 7.972397 second(s)
+Downloading /tmp/build/plv8-2.3.13/build/v8/third_party/binutils/Linux_x64/binutils.tar.bz2
+Extracting /tmp/build/plv8-2.3.13/build/v8/third_party/binutils/Linux_x64/binutils.tar.bz2
+Hook 'vpython v8/third_party/binutils/download.py' took 10.21 secs
+________ running 'vpython v8/tools/clang/scripts/update.py' in '/tmp/build/plv8-2.3.13/build'
+Updating Clang to 318667-1...
+Downloading prebuilt clang
+Downloading https://commondatastorage.googleapis.com/chromium-browser-clang/Linux_x64/clang-318667-1.tgz .......... Done.
+Creating directory /tmp/build/plv8-2.3.13/build/v8/third_party/llvm-build/Release+Asserts
+clang 318667-1 unpacked
+Hook 'vpython v8/tools/clang/scripts/update.py' took 10.33 secs
+________ running 'vpython v8/gypfiles/gyp_v8 --running-as-hook' in '/tmp/build/plv8-2.3.13/build'
+GYP is now disabled by default in runhooks.
+
+If you really want to run this, either run 
+`python gypfiles/gyp_v8` explicitly by hand 
+or set the environment variable GYP_CHROMIUM_NO_ACTION=0.
+[detached HEAD 7990cf9fb] [ios] Various build fixes for Xcode 10.
+ Author: Justin Cohen <justincohen@google.com>
+ Date: Tue Jun 5 15:30:25 2018 +0000
+ Committer: root <root@38daac58bde2>
+Your name and email address were configured automatically based
+on your username and hostname. Please check that they are accurate.
+You can suppress this message by setting them explicitly. Run the
+following command and follow the instructions in your editor to edit
+your configuration file:
+
+    git config --global --edit
+
+After doing this, you may fix the identity used for this commit with:
+
+    git commit --amend --reset-author
+
+ 2 files changed, 36 insertions(+), 11 deletions(-)
+cd build/v8 ; env CXXFLAGS=-fPIC CFLAGS=-fPIC ninja -C out.gn/x64.release d8
+ninja: Entering directory `out.gn/x64.release'
+[1/1] Regenerating ninja files
+[1/1] Regenerating ninja files
+[1/665] STAMP obj/d8_js2c.inputdeps.stamp
+[2/665] STAMP obj/js2c.inputdeps.stamp
+[3/665] STAMP obj/js2c_extras.inputdeps.stamp
+[4/665] STAMP obj/js2c_experimental_extras.inputdeps.stamp
+[5/665] ACTION //:js2c_experimental_extras(//build/toolchain/linux:clang_x64)
+[6/665] ACTION //:js2c_extras(//build/toolchain/linux:clang_x64)
+[7/665] STAMP obj/js2c_experimental_extras.stamp
+[8/665] STAMP obj/js2c_extras.stamp
+[9/665] ACTION //:d8_js2c(//build/toolchain/linux:clang_x64)
+[10/665] STAMP obj/d8_js2c.stamp
+[11/665] CXX obj/v8_libbase/functional.o
+[12/665] CXX obj/v8_libbase/once.o
+[13/665] CXX obj/v8_libbase/file-utils.o
+[14/665] CXX obj/v8_libbase/ieee754.o
+[15/665] CXX obj/v8_libbase/logging.o
+[16/665] CXX obj/v8_libbase/condition-variable.o
+[17/665] CXX obj/v8_libbase/mutex.o
+[18/665] CXX obj/v8_libbase/semaphore.o
+[19/665] ACTION //:js2c(//build/toolchain/linux:clang_x64)
+[20/665] STAMP obj/js2c.stamp
+[21/665] CXX obj/v8_libbase/time.o
+[22/665] CXX obj/v8_libbase/sys-info.o
+[23/665] CXX obj/v8_libbase/platform-posix-time.o
+[24/665] CXX obj/v8_libbase/random-number-generator.o
+[25/665] CXX obj/v8_libbase/platform-linux.o
+[26/665] CXX obj/v8_libbase/stack_trace_posix.o
+[27/665] CXX obj/v8_libbase/platform-posix.o
+[28/665] CXX obj/v8_libplatform/default-background-task-runner.o
+[29/665] CXX obj/v8_libbase/cpu.o
+[30/665] CXX obj/v8_libbase/division-by-constant.o
+[31/665] CXX obj/v8_libbase/stack_trace.o
+[32/665] CXX obj/v8_libbase/bits.o
+[33/665] CXX obj/v8_libplatform/task-queue.o
+[34/665] CXX obj/v8_libplatform/trace-buffer.o
+[35/665] CXX obj/v8_libplatform/trace-object.o
+[36/665] CXX obj/v8_libplatform/trace-config.o
+[37/665] CXX obj/v8_libplatform/default-foreground-task-runner.o
+[38/665] CXX obj/v8_libplatform/default-platform.o
+[39/665] STAMP obj/v8_version.stamp
+[40/665] ACTION //:v8_dump_build_config(//build/toolchain/linux:clang_x64)
+[41/665] STAMP obj/v8_headers.stamp
+[42/665] STAMP obj/v8_dump_build_config.stamp
+[43/665] STAMP obj/build/win/default_exe_manifest.stamp
+[44/665] CXX obj/buildtools/third_party/libc++/libc++/any.o
+[45/665] CXX obj/buildtools/third_party/libc++/libc++/bind.o
+[46/665] CXX obj/v8_libplatform/trace-writer.o
+[47/665] CXX obj/v8_libplatform/tracing-controller.o
+[48/665] CXX obj/v8_libplatform/worker-thread.o
+[49/665] CXX obj/buildtools/third_party/libc++abi/libc++abi/cxa_guard.o
+[50/665] CXX obj/buildtools/third_party/libc++abi/libc++abi/cxa_exception_storage.o
+[51/665] CXX obj/buildtools/third_party/libc++abi/libc++abi/cxa_handlers.o
+[52/665] CXX obj/buildtools/third_party/libc++abi/libc++abi/cxa_vector.o
+[53/665] CXX obj/buildtools/third_party/libc++/libc++/chrono.o
+[54/665] CXX obj/buildtools/third_party/libc++abi/libc++abi/cxa_virtual.o
+[55/665] CXX obj/buildtools/third_party/libc++abi/libc++abi/cxa_personality.o
+[56/665] CXX obj/v8_libsampler/sampler.o
+[57/665] CXX obj/buildtools/third_party/libc++abi/libc++abi/stdlib_exception.o
+[58/665] CXX obj/buildtools/third_party/libc++abi/libc++abi/fallback_malloc.o
+[59/665] CXX obj/buildtools/third_party/libc++abi/libc++abi/stdlib_typeinfo.o
+[60/665] CXX obj/buildtools/third_party/libc++abi/libc++abi/private_typeinfo.o
+[61/665] CXX obj/buildtools/third_party/libc++abi/libc++abi/stdlib_stdexcept.o
+[62/665] CXX obj/buildtools/third_party/libc++/libc++/exception.o
+[63/665] CXX obj/buildtools/third_party/libc++/libc++/functional.o
+[64/665] CXX obj/buildtools/third_party/libc++/libc++/condition_variable.o
+[65/665] CXX obj/buildtools/third_party/libc++/libc++/hash.o
+[66/665] CXX obj/buildtools/third_party/libc++/libc++/debug.o
+[67/665] CXX obj/buildtools/third_party/libc++/libc++/algorithm.o
+[68/665] CXX obj/buildtools/third_party/libc++/libc++/future.o
+[69/665] CXX obj/buildtools/third_party/libc++/libc++/iostream.o
+[70/665] CXX obj/buildtools/third_party/libc++/libc++/memory.o
+[71/665] CXX obj/buildtools/third_party/libc++/libc++/mutex.o
+[72/665] CXX obj/buildtools/third_party/libc++/libc++/new.o
+[73/665] CXX obj/buildtools/third_party/libc++/libc++/optional.o
+[74/665] CXX obj/buildtools/third_party/libc++/libc++/shared_mutex.o
+[75/665] CXX obj/buildtools/third_party/libc++/libc++/random.o
+[76/665] CXX obj/buildtools/third_party/libc++/libc++/regex.o
+[77/665] CXX obj/buildtools/third_party/libc++/libc++/stdexcept.o
+[78/665] CXX obj/buildtools/third_party/libc++/libc++/ios.o
+[79/665] CXX obj/buildtools/third_party/libc++/libc++/system_error.o
+[80/665] CXX obj/buildtools/third_party/libc++/libc++/strstream.o
+[81/665] CXX obj/buildtools/third_party/libc++/libc++/typeinfo.o
+[82/665] CXX obj/buildtools/third_party/libc++/libc++/utility.o
+[83/665] CXX obj/buildtools/third_party/libc++abi/libc++abi/cxa_demangle.o
+[84/665] CXX obj/buildtools/third_party/libc++/libc++/thread.o
+[85/665] CXX obj/buildtools/third_party/libc++abi/libc++abi/cxa_unexpected.o
+[86/665] CXX obj/buildtools/third_party/libc++/libc++/valarray.o
+[87/665] CXX obj/buildtools/third_party/libc++abi/libc++abi/abort_message.o
+[88/665] CXX obj/buildtools/third_party/libc++/libc++/variant.o
+[89/665] CXX obj/buildtools/third_party/libc++abi/libc++abi/cxa_exception.o
+[90/665] STAMP obj/src/inspector/protocol_compatibility.inputdeps.stamp
+[91/665] CXX obj/buildtools/third_party/libc++abi/libc++abi/cxa_aux_runtime.o
+[92/665] STAMP obj/src/inspector/inspector_injected_script.inputdeps.stamp
+[93/665] CXX obj/buildtools/third_party/libc++abi/libc++abi/cxa_default_handlers.o
+[94/665] STAMP obj/buildtools/third_party/libc++abi/libc++abi.stamp
+[95/665] ACTION //src/inspector:protocol_compatibility(//build/toolchain/linux:clang_x64)
+[96/665] ACTION //src/inspector:inspector_injected_script(//build/toolchain/linux:clang_x64)
+[97/665] STAMP obj/src/inspector/protocol_compatibility.stamp
+[98/665] STAMP obj/src/inspector/inspector_injected_script.stamp
+[99/665] STAMP obj/src/inspector/protocol_generated_sources.inputdeps.stamp
+[100/665] CXX obj/buildtools/third_party/libc++/libc++/vector.o
+[101/665] ACTION //src/inspector:protocol_generated_sources(//build/toolchain/linux:clang_x64)
+[102/665] STAMP obj/src/inspector/protocol_generated_sources.stamp
+[103/665] STAMP obj/mksnapshot.inputdeps.stamp
+[104/665] STAMP obj/v8_base.inputdeps.stamp
+[105/665] STAMP obj/v8_nosnapshot.inputdeps.stamp
+[106/665] STAMP obj/v8_initializers.inputdeps.stamp
+[107/665] CXX obj/buildtools/third_party/libc++/libc++/string.o
+[108/665] CXX obj/mksnapshot/mksnapshot.o
+[109/665] CXX obj/v8_nosnapshot/experimental-extras-libraries.o
+[110/665] CXX obj/v8_base/ast-value-factory.o
+[111/665] CXX obj/buildtools/third_party/libc++/libc++/locale.o
+[112/665] CXX obj/v8_nosnapshot/extras-libraries.o
+[113/665] CXX obj/v8_base/ast-numbering.o
+[114/665] CXX obj/v8_base/ast.o
+[115/665] CXX obj/v8_base/allocation.o
+[116/665] CXX obj/v8_nosnapshot/libraries.o
+[117/665] CXX obj/v8_base/accessors.o
+[118/665] CXX obj/v8_nosnapshot/snapshot-empty.o
+[119/665] CXX obj/v8_base/address-map.o
+[120/665] CXX obj/v8_base/api-arguments.o
+[121/665] CXX obj/v8_base/arguments.o
+[122/665] CXX obj/v8_base/api-natives.o
+[123/665] CXX obj/v8_base/asm-scanner.o
+[124/665] CXX obj/v8_base/asm-types.o
+[125/665] CXX obj/v8_base/switch-logic.o
+[126/665] CXX obj/v8_base/asm-js.o
+[127/665] CXX obj/v8_base/asm-parser.o
+[128/665] CXX obj/v8_base/assert-scope.o
+[129/665] CXX obj/v8_base/js-generic-lowering.o
+[130/665] CXX obj/v8_base/ast-function-literal-id-reindexer.o
+[131/665] CXX obj/v8_base/assembler.o
+[132/665] CXX obj/v8_base/js-graph.o
+[133/665] CXX obj/v8_base/js-inlining-heuristic.o
+[134/665] CXX obj/v8_base/js-intrinsic-lowering.o
+[135/665] CXX obj/v8_base/js-inlining.o
+[136/665] CXX obj/v8_base/compile-time-value.o
+[137/665] CXX obj/v8_base/api.o
+[138/665] CXX obj/v8_base/context-slot-cache.o
+[139/665] CXX obj/v8_base/bailout-reason.o
+[140/665] CXX obj/v8_base/js-native-context-specialization.o
+[141/665] CXX obj/v8_base/basic-block-profiler.o
+[142/665] CXX obj/v8_base/bignum-dtoa.o
+[143/665] CXX obj/v8_base/variables.o
+[144/665] CXX obj/v8_base/bignum.o
+[145/665] CXX obj/v8_base/modules.o
+[146/665] CXX obj/v8_base/prettyprinter.o
+[147/665] CXX obj/v8_base/bit-vector.o
+[148/665] CXX obj/v8_base/scopes.o
+[149/665] CXX obj/v8_base/builtins-api.o
+[150/665] CXX obj/v8_base/builtins-arraybuffer.o
+[151/665] CXX obj/v8_base/builtins-bigint.o
+[152/665] CXX obj/v8_base/builtins-boolean.o
+[153/665] CXX obj/v8_base/builtins-array.o
+[154/665] CXX obj/v8_base/builtins-call.o
+[155/665] CXX obj/v8_base/builtins-collections.o
+[156/665] CXX obj/v8_base/bootstrapper.o
+[157/665] CXX obj/v8_base/builtins-console.o
+[158/665] CXX obj/v8_base/builtins-callsite.o
+[159/665] CXX obj/v8_base/builtins-dataview.o
+[160/665] CXX obj/v8_base/builtins-error.o
+[161/665] CXX obj/v8_base/builtins-internal.o
+[162/665] CXX obj/v8_base/builtins-function.o
+[163/665] CXX obj/v8_base/builtins-global.o
+[164/665] CXX obj/v8_base/builtins-date.o
+[165/665] CXX obj/v8_base/builtins-interpreter.o
+[166/665] CXX obj/v8_base/builtins-json.o
+[167/665] CXX obj/v8_base/builtins-math.o
+[168/665] CXX obj/v8_base/builtins-promise.o
+[169/665] CXX obj/v8_base/builtins-number.o
+[170/665] CXX obj/v8_base/builtins-reflect.o
+[171/665] CXX obj/v8_base/builtins-object.o
+[172/665] CXX obj/v8_base/builtins-regexp.o
+[173/665] CXX obj/v8_base/cached-powers.o
+[174/665] CXX obj/v8_base/builtins-sharedarraybuffer.o
+[175/665] CXX obj/v8_base/builtins-symbol.o
+[176/665] CXX obj/v8_base/builtins-string.o
+[177/665] CXX obj/v8_base/builtins-typedarray.o
+[178/665] CXX obj/v8_base/builtins.o
+[179/665] CXX obj/v8_base/cancelable-task.o
+[180/665] CXX obj/v8_base/codegen.o
+[181/665] CXX obj/v8_base/code-factory.o
+[182/665] CXX obj/v8_base/compilation-cache.o
+[183/665] CXX obj/v8_base/compilation-dependencies.o
+[184/665] CXX obj/v8_base/compilation-statistics.o
+[185/665] CXX obj/v8_base/compilation-info.o
+[186/665] CXX obj/v8_base/compiler-dispatcher-job.o
+[187/665] CXX obj/v8_base/code-stubs.o
+[188/665] CXX obj/v8_base/compiler-dispatcher-tracer.o
+[189/665] CXX obj/v8_base/compiler-dispatcher.o
+[190/665] CXX obj/v8_base/optimizing-compile-dispatcher.o
+[191/665] CXX obj/v8_base/access-builder.o
+[192/665] CXX obj/v8_base/unoptimized-compile-job.o
+[193/665] CXX obj/v8_base/all-nodes.o
+[194/665] CXX obj/v8_base/code-stub-assembler.o
+[195/665] CXX obj/v8_base/compiler.o
+[196/665] CXX obj/v8_base/bytecode-liveness-map.o
+[197/665] CXX obj/v8_base/branch-elimination.o
+[198/665] CXX obj/v8_base/basic-block-instrumentor.o
+[199/665] CXX obj/v8_base/access-info.o
+[200/665] CXX obj/v8_base/bytecode-analysis.o
+[201/665] CXX obj/v8_base/c-linkage.o
+[202/665] CXX obj/v8_base/array-buffer-collector.o
+[203/665] CXX obj/v8_base/checkpoint-elimination.o
+[204/665] CXX obj/v8_base/array-buffer-tracker.o
+[205/665] CXX obj/v8_base/code-stats.o
+[206/665] CXX obj/v8_base/bytecode-graph-builder.o
+[207/665] CXX obj/v8_base/common-node-cache.o
+[208/665] CXX obj/v8_base/common-operator-reducer.o
+[209/665] CXX obj/v8_base/compiler-source-position-table.o
+[210/665] CXX obj/v8_base/control-equivalence.o
+[211/665] CXX obj/v8_base/code-assembler.o
+[212/665] CXX obj/v8_base/common-operator.o
+[213/665] CXX obj/v8_base/dead-code-elimination.o
+[214/665] CXX obj/v8_base/control-flow-optimizer.o
+[215/665] CXX obj/v8_base/code-generator.o
+[216/665] CXX obj/v8_base/frame-elider.o
+[217/665] CXX obj/v8_base/escape-analysis-reducer.o
+[218/665] CXX obj/v8_base/frame.o
+[219/665] CXX obj/v8_base/frame-states.o
+[220/665] CXX obj/v8_base/gap-resolver.o
+[221/665] CXX obj/v8_base/escape-analysis.o
+[222/665] CXX obj/v8_base/graph-reducer.o
+[223/665] CXX obj/v8_base/effect-control-linearizer.o
+[224/665] CXX obj/v8_base/graph-assembler.o
+[225/665] CXX obj/v8_base/graph-trimmer.o
+[226/665] CXX obj/v8_base/graph.o
+[227/665] CXX obj/v8_base/instruction-scheduler.o
+[228/665] CXX obj/v8_base/int64-lowering.o
+[229/665] CXX obj/v8_base/instruction.o
+[230/665] CXX obj/v8_base/graph-visualizer.o
+[231/665] CXX obj/v8_base/js-builtin-reducer.o
+[232/665] CXX obj/v8_base/instruction-selector.o
+[233/665] CXX obj/v8_base/js-call-reducer.o
+[234/665] CXX obj/v8_base/js-context-specialization.o
+[235/665] CXX obj/v8_base/profiler-listener.o
+[236/665] CXX obj/v8_base/js-create-lowering.o
+[237/665] CXX obj/v8_base/strings-storage.o
+[238/665] CXX obj/v8_base/tracing-cpu-profiler.o
+[239/665] CXX obj/v8_base/interpreter-irregexp.o
+[240/665] CXX obj/v8_base/tick-sample.o
+[241/665] CXX obj/v8_base/sampling-heap-profiler.o
+[242/665] CXX obj/v8_base/regexp-ast.o
+[243/665] CXX obj/v8_base/property.o
+[244/665] CXX obj/v8_base/property-descriptor.o
+[245/665] CXX obj/v8_base/js-type-hint-lowering.o
+[246/665] CXX obj/v8_base/js-operator.o
+[247/665] CXX obj/v8_base/jump-threading.o
+[248/665] CXX obj/v8_base/live-range-separator.o
+[249/665] CXX obj/v8_base/linkage.o
+[250/665] CXX obj/v8_base/js-typed-lowering.o
+[251/665] CXX obj/v8_base/jsregexp.o
+[252/665] CXX obj/v8_base/loop-analysis.o
+[253/665] CXX obj/v8_base/loop-peeling.o
+[254/665] CXX obj/v8_base/interpreter-intrinsics.o
+[255/665] CXX obj/v8_base/loop-variable-optimizer.o
+[256/665] CXX obj/v8_base/handler-table-builder.o
+[257/665] CXX obj/v8_base/load-elimination.o
+[258/665] CXX obj/v8_base/machine-graph-verifier.o
+[259/665] CXX obj/v8_base/interpreter.o
+[260/665] CXX obj/v8_base/machine-operator-reducer.o
+[261/665] CXX obj/v8_base/node-cache.o
+[262/665] CXX obj/v8_base/memory-optimizer.o
+[263/665] CXX obj/v8_base/move-optimizer.o
+[264/665] CXX obj/v8_base/machine-operator.o
+[265/665] CXX obj/v8_base/node-marker.o
+[266/665] CXX obj/v8_base/opcodes.o
+[267/665] CXX obj/v8_base/node-matchers.o
+[268/665] CXX obj/v8_base/node.o
+[269/665] CXX obj/v8_base/operator.o
+[270/665] CXX obj/v8_base/isolate.o
+[271/665] CXX obj/v8_base/operator-properties.o
+[272/665] CXX obj/v8_base/node-properties.o
+[273/665] CXX obj/v8_base/operation-typer.o
+[274/665] CXX obj/v8_base/pipeline-statistics.o
+[275/665] CXX obj/v8_base/osr.o
+[276/665] CXX obj/v8_base/redundancy-elimination.o
+[277/665] CXX obj/v8_base/property-access-builder.o
+[278/665] CXX obj/v8_base/raw-machine-assembler.o
+[279/665] CXX obj/v8_base/register-allocator-verifier.o
+[280/665] CXX obj/v8_base/schedule.o
+[281/665] CXX obj/v8_base/representation-change.o
+[282/665] CXX obj/v8_base/pipeline.o
+[283/665] CXX obj/v8_base/select-lowering.o
+[284/665] CXX obj/v8_base/simd-scalar-lowering.o
+[285/665] CXX obj/v8_base/register-allocator.o
+[286/665] CXX obj/v8_base/scheduler.o
+[287/665] CXX obj/v8_base/simplified-operator-reducer.o
+[288/665] CXX obj/v8_base/type-cache.o
+[289/665] CXX obj/v8_base/state-values-utils.o
+[290/665] CXX obj/v8_base/store-store-elimination.o
+[291/665] CXX obj/v8_base/simplified-operator.o
+[292/665] CXX obj/v8_base/simplified-lowering.o
+[293/665] CXX obj/v8_base/value-numbering-reducer.o
+[294/665] CXX obj/v8_base/typed-optimization.o
+[295/665] CXX obj/v8_base/types.o
+[296/665] CXX obj/v8_base/zone-stats.o
+[297/665] CXX obj/v8_base/verifier.o
+[298/665] CXX obj/v8_base/typer.o
+[299/665] CXX obj/v8_base/wasm-linkage.o
+[300/665] CXX obj/v8_base/contexts.o
+[301/665] CXX obj/v8_base/conversions.o
+[302/665] CXX obj/v8_base/date.o
+[303/665] CXX obj/v8_base/counters.o
+[304/665] CXX obj/v8_base/wasm-compiler.o
+[305/665] CXX obj/v8_base/dateparser.o
+[306/665] CXX obj/v8_base/debug-evaluate.o
+[307/665] CXX obj/v8_base/debug-coverage.o
+[308/665] CXX obj/v8_base/debug-frames.o
+[309/665] CXX obj/v8_base/debug-scope-iterator.o
+[310/665] CXX obj/v8_base/debug-scopes.o
+[311/665] CXX obj/v8_base/deoptimize-reason.o
+[312/665] CXX obj/v8_base/debug-stack-trace-iterator.o
+[313/665] CXX obj/v8_base/diy-fp.o
+[314/665] CXX obj/v8_base/debug-type-profile.o
+[315/665] CXX obj/v8_base/dtoa.o
+[316/665] CXX obj/v8_base/liveedit.o
+[317/665] CXX obj/v8_base/eh-frame.o
+[318/665] CXX obj/v8_base/disassembler.o
+[319/665] CXX obj/v8_base/debug.o
+[320/665] CXX obj/v8_base/elements-kind.o
+[321/665] CXX obj/v8_base/free-buffer-extension.o
+[322/665] CXX obj/v8_base/gc-extension.o
+[323/665] CXX obj/v8_base/externalize-string-extension.o
+[324/665] CXX obj/v8_base/execution.o
+[325/665] CXX obj/v8_base/ignition-statistics-extension.o
+[326/665] CXX obj/v8_base/deoptimizer.o
+[327/665] CXX obj/v8_base/trigger-failure-extension.o
+[328/665] CXX obj/v8_base/fast-dtoa.o
+[329/665] CXX obj/v8_base/external-reference-table.o
+[330/665] CXX obj/v8_base/statistics-extension.o
+[331/665] CXX obj/v8_base/fixed-dtoa.o
+[332/665] CXX obj/v8_base/field-type.o
+[333/665] CXX obj/v8_base/flags.o
+[334/665] CXX obj/v8_base/feedback-vector.o
+[335/665] CXX obj/v8_base/factory.o
+[336/665] CXX obj/v8_base/futex-emulation.o
+[337/665] CXX obj/v8_base/global-handles.o
+[338/665] CXX obj/v8_base/frames.o
+[339/665] CXX obj/v8_base/elements.o
+[340/665] CXX obj/v8_base/gdb-jit.o
+[341/665] CXX obj/v8_base/handles.o
+[342/665] CXX obj/v8_initializers/builtins-global-gen.o
+[343/665] CXX obj/v8_initializers/builtins-ic-gen.o
+[344/665] CXX obj/v8_initializers/builtins-generator-gen.o
+[345/665] CXX obj/v8_base/embedder-tracing.o
+[346/665] CXX obj/v8_initializers/builtins-handler-gen.o
+[347/665] CXX obj/v8_initializers/builtins-interpreter-gen.o
+[348/665] CXX obj/v8_base/gc-idle-time-handler.o
+[349/665] CXX obj/v8_initializers/builtins-internal-gen.o
+[350/665] CXX obj/v8_base/invalidated-slots.o
+[351/665] CXX obj/v8_base/gc-tracer.o
+[352/665] CXX obj/v8_base/concurrent-marking.o
+[353/665] CXX obj/v8_base/incremental-marking-job.o
+[354/665] CXX obj/v8_base/marking.o
+[355/665] CXX obj/v8_base/incremental-marking.o
+[356/665] CXX obj/v8_base/memory-reducer.o
+[357/665] CXX obj/v8_base/objects-visiting.o
+[358/665] CXX obj/v8_base/heap.o
+[359/665] CXX obj/v8_base/scavenge-job.o
+[360/665] CXX obj/v8_base/object-stats.o
+[361/665] CXX obj/v8_base/scavenger.o
+[362/665] CXX obj/v8_base/mark-compact.o
+[363/665] CXX obj/v8_base/store-buffer.o
+[364/665] CXX obj/v8_base/call-optimization.o
+[365/665] CXX obj/v8_base/spaces.o
+[366/665] CXX obj/v8_base/icu_util.o
+[367/665] CXX obj/v8_base/sweeper.o
+[368/665] CXX obj/v8_base/handler-configuration.o
+[369/665] CXX obj/v8_base/interface-descriptors.o
+[370/665] CXX obj/v8_base/ic-stats.o
+[371/665] CXX obj/v8_base/stub-cache.o
+[372/665] CXX obj/v8_base/identity-map.o
+[373/665] CXX obj/v8_base/ic.o
+[374/665] CXX obj/v8_base/bytecode-array-accessor.o
+[375/665] CXX obj/v8_base/bytecode-array-iterator.o
+[376/665] CXX obj/v8_base/bytecode-array-random-iterator.o
+[377/665] CXX obj/v8_base/bytecode-array-writer.o
+[378/665] CXX obj/v8_base/bytecode-node.o
+[379/665] CXX obj/v8_base/bytecode-decoder.o
+[380/665] CXX obj/v8_base/bytecode-operands.o
+[381/665] CXX obj/v8_base/bytecode-array-builder.o
+[382/665] CXX obj/v8_base/bytecode-flags.o
+[383/665] CXX obj/v8_base/bytecode-register.o
+[384/665] CXX obj/v8_base/bytecode-label.o
+[385/665] CXX obj/v8_base/bytecode-source-info.o
+[386/665] CXX obj/v8_base/bytecode-register-optimizer.o
+[387/665] CXX obj/v8_base/bytecodes.o
+[388/665] CXX obj/v8_base/bytecode-generator.o
+[389/665] CXX obj/v8_base/control-flow-builders.o
+[390/665] CXX obj/v8_base/constant-array-builder.o
+[391/665] CXX obj/v8_base/keys.o
+[392/665] CXX obj/v8_base/json-stringifier.o
+[393/665] CXX obj/v8_base/json-parser.o
+[394/665] CXX obj/v8_base/machine-type.o
+[395/665] CXX obj/v8_base/layout-descriptor.o
+[396/665] CXX obj/v8_base/lookup-cache.o
+[397/665] CXX obj/v8_base/log-utils.o
+[398/665] CXX obj/v8_base/lookup.o
+[399/665] CXX obj/v8_base/log.o
+[400/665] CXX obj/v8_base/map-updater.o
+[401/665] CXX obj/v8_base/objects-debug.o
+[402/665] CXX obj/v8_base/messages.o
+[403/665] CXX obj/v8_base/objects-printer.o
+[404/665] CXX obj/v8_base/debug-objects.o
+[405/665] CXX obj/v8_base/bigint.o
+[406/665] CXX obj/v8_base/literal-objects.o
+[407/665] CXX obj/v8_base/ostreams.o
+[408/665] CXX obj/v8_base/scope-info.o
+[409/665] CXX obj/v8_base/template-objects.o
+[410/665] CXX obj/v8_base/module.o
+[411/665] CXX obj/v8_base/background-parsing-task.o
+[412/665] CXX obj/v8_base/expression-scope-reparenter.o
+[413/665] CXX obj/v8_base/func-name-inferrer.o
+[414/665] CXX obj/v8_base/parse-info.o
+[415/665] CXX obj/v8_base/parsing.o
+[416/665] CXX obj/v8_base/preparse-data.o
+[417/665] CXX obj/v8_base/pattern-rewriter.o
+[418/665] CXX obj/v8_base/preparsed-scope-data.o
+[419/665] CXX obj/v8_base/scanner-character-streams.o
+[420/665] CXX obj/v8_base/parser.o
+[421/665] CXX obj/v8_base/token.o
+[422/665] CXX obj/v8_base/rewriter.o
+[423/665] CXX obj/v8_base/objects.o
+[424/665] CXX obj/v8_base/scanner.o
+[425/665] CXX obj/v8_base/preparser.o
+[426/665] CXX obj/v8_base/pending-compilation-error-handler.o
+[427/665] CXX obj/v8_base/perf-jit.o
+[428/665] CXX obj/v8_base/regexp-macro-assembler-irregexp.o
+[429/665] CXX obj/v8_base/allocation-tracker.o
+[430/665] CXX obj/v8_base/cpu-profiler.o
+[431/665] CXX obj/v8_base/heap-profiler.o
+[432/665] CXX obj/v8_base/regexp-macro-assembler-tracer.o
+[433/665] CXX obj/v8_base/regexp-stack.o
+[434/665] CXX obj/v8_base/regexp-macro-assembler.o
+[435/665] CXX obj/v8_base/profile-generator.o
+[436/665] CXX obj/v8_base/regexp-parser.o
+[437/665] CXX obj/v8_base/register-configuration.o
+[438/665] CXX obj/v8_base/heap-snapshot-generator.o
+[439/665] CXX obj/v8_base/regexp-utils.o
+[440/665] CXX obj/v8_base/runtime-profiler.o
+[441/665] CXX obj/v8_base/runtime-atomics.o
+[442/665] CXX obj/v8_base/runtime-array.o
+[443/665] CXX obj/v8_base/runtime-bigint.o
+[444/665] CXX obj/v8_base/runtime-classes.o
+[445/665] CXX obj/v8_base/runtime-collections.o
+[446/665] CXX obj/v8_base/runtime-compiler.o
+[447/665] CXX obj/v8_base/runtime-date.o
+[448/665] CXX obj/v8_base/runtime-error.o
+[449/665] CXX obj/v8_base/runtime-forin.o
+[450/665] CXX obj/v8_base/runtime-function.o
+[451/665] CXX obj/v8_base/runtime-futex.o
+[452/665] CXX obj/v8_base/runtime-generator.o
+[453/665] CXX obj/v8_base/runtime-debug.o
+[454/665] CXX obj/v8_base/runtime-interpreter.o
+[455/665] CXX obj/v8_base/runtime-internal.o
+[456/665] CXX obj/v8_base/runtime-literals.o
+[457/665] CXX obj/v8_base/runtime-liveedit.o
+[458/665] CXX obj/v8_base/runtime-maths.o
+[459/665] CXX obj/v8_base/runtime-module.o
+[460/665] CXX obj/v8_base/runtime-numbers.o
+[461/665] CXX obj/v8_base/runtime-operators.o
+[462/665] CXX obj/v8_base/runtime-proxy.o
+[463/665] CXX obj/v8_base/runtime-promise.o
+[464/665] CXX obj/v8_base/runtime-object.o
+[465/665] CXX obj/v8_base/runtime-scopes.o
+[466/665] CXX obj/v8_base/runtime-symbol.o
+[467/665] CXX obj/v8_base/runtime-strings.o
+[468/665] CXX obj/v8_base/runtime-typedarray.o
+[469/665] CXX obj/v8_base/runtime-regexp.o
+[470/665] CXX obj/v8_base/runtime-test.o
+[471/665] CXX obj/v8_base/runtime.o
+[472/665] CXX obj/v8_base/runtime-wasm.o
+[473/665] CXX obj/v8_base/builtin-deserializer-allocator.o
+[474/665] CXX obj/v8_base/safepoint-table.o
+[475/665] CXX obj/v8_base/builtin-snapshot-utils.o
+[476/665] CXX obj/v8_base/builtin-deserializer.o
+[477/665] CXX obj/v8_base/builtin-serializer-allocator.o
+[478/665] CXX obj/v8_base/builtin-serializer.o
+[479/665] CXX obj/v8_base/default-serializer-allocator.o
+[480/665] CXX obj/v8_base/default-deserializer-allocator.o
+[481/665] CXX obj/v8_base/code-serializer.o
+[482/665] CXX obj/v8_base/natives-common.o
+[483/665] CXX obj/v8_base/deserializer.o
+[484/665] CXX obj/v8_base/object-deserializer.o
+[485/665] CXX obj/v8_base/partial-deserializer.o
+[486/665] CXX obj/v8_base/partial-serializer.o
+[487/665] CXX obj/v8_base/serializer-common.o
+[488/665] CXX obj/v8_base/serializer.o
+[489/665] CXX obj/v8_base/snapshot-common.o
+[490/665] CXX obj/v8_base/snapshot-source-sink.o
+[491/665] CXX obj/v8_base/startup-data-util.o
+[492/665] CXX obj/v8_base/source-position-table.o
+[493/665] CXX obj/v8_base/startup-deserializer.o
+[494/665] CXX obj/v8_base/startup-serializer.o
+[495/665] CXX obj/v8_base/string-case.o
+[496/665] CXX obj/v8_base/strtod.o
+[497/665] CXX obj/v8_base/tracing-category-observer.o
+[498/665] CXX obj/v8_base/traced-value.o
+[499/665] CXX obj/v8_base/source-position.o
+[500/665] CXX obj/v8_base/trace-event.o
+[501/665] CXX obj/v8_base/string-builder.o
+[502/665] CXX obj/v8_base/handler-outside.o
+[503/665] CXX obj/v8_base/handler-shared.o
+[504/665] CXX obj/v8_base/type-hints.o
+[505/665] CXX obj/v8_base/unicode-decoder.o
+[506/665] CXX obj/v8_base/string-stream.o
+[507/665] CXX obj/v8_base/unicode.o
+[508/665] CXX obj/v8_base/utils.o
+[509/665] CXX obj/v8_base/version.o
+[510/665] CXX obj/v8_base/transitions.o
+[511/665] CXX obj/v8_base/visitors.o
+[512/665] CXX obj/v8_base/uri.o
+[513/665] CXX obj/v8_base/v8.o
+[514/665] CXX obj/v8_base/v8threads.o
+[515/665] CXX obj/v8_base/local-decl-encoder.o
+[516/665] CXX obj/v8_base/memory-tracing.o
+[517/665] CXX obj/v8_base/value-serializer.o
+[518/665] CXX obj/v8_base/liftoff-assembler.o
+[519/665] CXX obj/v8_base/compilation-manager.o
+[520/665] CXX obj/v8_base/signature-map.o
+[521/665] CXX obj/v8_base/liftoff-compiler.o
+[522/665] CXX obj/v8_base/wasm-api.o
+[523/665] CXX obj/v8_base/streaming-decoder.o
+[524/665] CXX obj/v8_base/function-body-decoder.o
+[525/665] CXX obj/v8_base/wasm-code-wrapper.o
+[526/665] CXX obj/v8_base/module-decoder.o
+[527/665] CXX obj/v8_base/wasm-external-refs.o
+[528/665] CXX obj/v8_base/wasm-code-specialization.o
+[529/665] CXX obj/v8_base/module-compiler.o
+[530/665] CXX obj/v8_base/wasm-memory.o
+[531/665] CXX obj/v8_base/wasm-debug.o
+[532/665] CXX obj/v8_base/wasm-js.o
+[533/665] CXX obj/v8_base/wasm-heap.o
+[534/665] CXX obj/v8_base/wasm-opcodes.o
+[535/665] CXX obj/v8_base/wasm-interpreter.o
+[536/665] CXX obj/v8_base/wasm-module-builder.o
+[537/665] CXX obj/v8_base/accounting-allocator.o
+[538/665] CXX obj/v8_base/zone-segment.o
+[539/665] CXX obj/v8_base/wasm-result.o
+[540/665] CXX obj/v8_base/wasm-module.o
+[541/665] CXX obj/v8_base/zone.o
+[542/665] CXX obj/v8_base/wasm-objects.o
+[543/665] CXX obj/v8_base/wasm-text.o
+[544/665] CXX obj/v8_base/wasm-serialization.o
+[545/665] CXX obj/v8_base/instruction-scheduler-x64.o
+[546/665] CXX obj/v8_base/unwinding-info-writer-x64.o
+[547/665] CXX obj/v8_base/instruction-selector-x64.o
+[548/665] CXX obj/v8_base/debug-x64.o
+[549/665] CXX obj/v8_base/regexp-macro-assembler-x64.o
+[550/665] CXX obj/v8_base/code-generator-x64.o
+[551/665] CXX obj/v8_base/cpu-x64.o
+[552/665] CXX obj/v8_base/code-stubs-x64.o
+[553/665] CXX obj/v8_base/codegen-x64.o
+[554/665] CXX obj/v8_base/disasm-x64.o
+[555/665] CXX obj/v8_base/deoptimizer-x64.o
+[556/665] CXX obj/v8_base/eh-frame-x64.o
+[557/665] CXX obj/v8_base/assembler-x64.o
+[558/665] CXX obj/v8_base/handler-inside.o
+[559/665] CXX obj/v8_base/simulator-x64.o
+[560/665] STAMP obj/v8_init.inputdeps.stamp
+[561/665] CXX obj/v8_base/interface-descriptors-x64.o
+[562/665] CXX obj/v8_base/frame-constants-x64.o
+[563/665] CXX obj/v8_init/setup-isolate-full.o
+[564/665] CXX obj/v8_base/macro-assembler-x64.o
+[565/665] CXX obj/v8_initializers/builtins-async-gen.o
+[566/665] CXX obj/v8_initializers/builtins-arguments-gen.o
+[567/665] CXX obj/v8_initializers/builtins-async-generator-gen.o
+[568/665] CXX obj/v8_initializers/builtins-async-iterator-gen.o
+[569/665] CXX obj/v8_initializers/builtins-date-gen.o
+[570/665] CXX obj/v8_initializers/builtins-debug-gen.o
+[571/665] CXX obj/v8_initializers/builtins-function-gen.o
+[572/665] CXX obj/v8_initializers/builtins-conversion-gen.o
+[573/665] CXX obj/v8_initializers/builtins-constructor-gen.o
+[574/665] CXX obj/v8_initializers/builtins-boolean-gen.o
+[575/665] CXX obj/v8_initializers/builtins-async-function-gen.o
+[576/665] CXX obj/v8_initializers/builtins-console-gen.o
+[577/665] CXX obj/v8_initializers/builtins-call-gen.o
+[578/665] CXX obj/v8_initializers/builtins-math-gen.o
+[579/665] CXX obj/v8_initializers/builtins-iterator-gen.o
+[580/665] CXX obj/v8_initializers/builtins-number-gen.o
+[581/665] CXX obj/v8_initializers/builtins-reflect-gen.o
+[582/665] CXX obj/v8_initializers/builtins-object-gen.o
+[583/665] CXX obj/v8_initializers/builtins-collections-gen.o
+[584/665] CXX obj/v8_initializers/builtins-proxy-gen.o
+[585/665] CXX obj/v8_initializers/builtins-promise-gen.o
+[586/665] CXX obj/v8_initializers/builtins-sharedarraybuffer-gen.o
+[587/665] CXX obj/v8_initializers/builtins-symbol-gen.o
+[588/665] CXX obj/v8_initializers/builtins-regexp-gen.o
+[589/665] CXX obj/v8_initializers/builtins-typedarray-gen.o
+[590/665] CXX obj/v8_initializers/builtins-wasm-gen.o
+[591/665] CXX obj/v8_initializers/setup-heap-internal.o
+[592/665] CXX obj/v8_initializers/builtins-string-gen.o
+[593/665] CXX obj/v8_initializers/setup-builtins-internal.o
+[594/665] CXX obj/v8_initializers/binary-op-assembler.o
+[595/665] CXX obj/v8_initializers/accessor-assembler.o
+[596/665] CXX obj/v8_initializers/keyed-store-generic.o
+[597/665] CXX obj/v8_initializers/interpreter-assembler.o
+[598/665] STAMP obj/buildtools/third_party/libc++/libc++.stamp
+[599/665] STAMP obj/build/config/exe_and_shlib_deps.stamp
+[600/665] AR obj/libv8_libbase.a
+[601/665] AR obj/libv8_libplatform.a
+[602/665] AR obj/libv8_libsampler.a
+[603/665] STAMP obj/src/inspector/inspector.inputdeps.stamp
+[604/665] CXX obj/v8_initializers/interpreter-intrinsics-generator.o
+[605/665] CXX obj/v8_initializers/interpreter-generator.o
+[606/665] CXX obj/v8_initializers/setup-interpreter-internal.o
+[607/665] CXX obj/v8_initializers/builtins-x64.o
+[608/665] CXX obj/src/inspector/inspector/Console.o
+[609/665] CXX obj/src/inspector/inspector/HeapProfiler.o
+[610/665] CXX obj/src/inspector/inspector/Schema.o
+[611/665] CXX obj/src/inspector/inspector/Profiler.o
+[612/665] CXX obj/src/inspector/inspector/remote-object-id.o
+[613/665] CXX obj/v8_initializers/builtins-array-gen.o
+[614/665] CXX obj/src/inspector/inspector/Debugger.o
+[615/665] CXX obj/src/inspector/inspector/inspected-context.o
+[616/665] CXX obj/src/inspector/inspector/search-util.o
+[617/665] CXX obj/src/inspector/inspector/string-16.o
+[618/665] CXX obj/src/inspector/inspector/injected-script.o
+[619/665] CXX obj/src/inspector/inspector/string-util.o
+[620/665] CXX obj/src/inspector/inspector/test-interface.o
+[621/665] CXX obj/src/inspector/inspector/Protocol.o
+[622/665] CXX obj/src/inspector/inspector/v8-console-agent-impl.o
+[623/665] CXX obj/src/inspector/inspector/Runtime.o
+[624/665] CXX obj/src/inspector/inspector/v8-debugger-script.o
+[625/665] CXX obj/src/inspector/inspector/v8-console-message.o
+[626/665] CXX obj/src/inspector/inspector/v8-console.o
+[627/665] CXX obj/src/inspector/inspector/v8-function-call.o
+[628/665] CXX obj/src/inspector/inspector/v8-heap-profiler-agent-impl.o
+[629/665] CXX obj/src/inspector/inspector/v8-debugger-agent-impl.o
+[630/665] CXX obj/src/inspector/inspector/v8-injected-script-host.o
+[631/665] CXX obj/src/inspector/inspector/v8-internal-value-type.o
+[632/665] CXX obj/src/inspector/inspector/v8-debugger.o
+[633/665] CXX obj/src/inspector/inspector/v8-regex.o
+[634/665] CXX obj/src/inspector/inspector/v8-inspector-impl.o
+[635/665] CXX obj/src/inspector/inspector/v8-inspector-session-impl.o
+[636/665] CXX obj/src/inspector/inspector/v8-schema-agent-impl.o
+[637/665] CXX obj/src/inspector/inspector/v8-value-utils.o
+[638/665] CXX obj/src/inspector/inspector/v8-profiler-agent-impl.o
+[639/665] CXX obj/src/inspector/inspector/v8-stack-trace-impl.o
+[640/665] CXX obj/src/inspector/inspector/v8-runtime-agent-impl.o
+[641/665] CXX obj/src/inspector/inspector/wasm-translation.o
+[642/665] AR obj/src/inspector/libinspector.a
+[643/665] AR obj/libv8_base.a
+[644/665] AR obj/libv8_nosnapshot.a
+[645/665] AR obj/libv8_initializers.a
+[646/665] AR obj/libv8_init.a
+[647/665] LINK ./mksnapshot
+[648/665] STAMP obj/run_mksnapshot.inputdeps.stamp
+[649/665] ACTION //:run_mksnapshot(//build/toolchain/linux:clang_x64)
+[650/665] STAMP obj/run_mksnapshot.stamp
+[651/665] STAMP obj/d8.inputdeps.stamp
+[652/665] STAMP obj/v8_snapshot.inputdeps.stamp
+[653/665] CXX obj/v8_snapshot/extras-libraries.o
+[654/665] CXX obj/d8/d8-js.o
+[655/665] CXX obj/d8/d8-posix.o
+[656/665] CXX obj/v8_snapshot/libraries.o
+[657/665] CXX obj/d8/d8-console.o
+[658/665] CXX obj/v8_snapshot/experimental-extras-libraries.o
+[659/665] CXX obj/v8_snapshot/setup-isolate-deserialize.o
+[660/665] CXX obj/v8_snapshot/snapshot.o
+[661/665] AR obj/libv8_snapshot.a
+[662/665] STAMP obj/v8_maybe_snapshot.stamp
+[663/665] STAMP obj/v8.stamp
+[664/665] CXX obj/d8/d8.o
+[665/665] LINK ./d8
+sed -e 's/^#undef PLV8_VERSION/#define PLV8_VERSION "2.3.13"/' plv8_config.h.in > plv8_config.h
+g++ -Wall -O2 -std=c++11 -fno-rtti  -Ibuild/v8/include -Ibuild/v8 -std=c++11 -I. -I./ -I/usr/include/postgresql/12/server -I/usr/include/postgresql/internal  -Wdate-time -D_FORTIFY_SOURCE=2 -D_GNU_SOURCE -I/usr/include/libxml2  -I/usr/include/mit-krb5 -fPIC -c -o plv8.o plv8.cc
+[91mplv8.cc: In function ‘void GetGlobalContext(v8::Persistent<v8::Context>&)’:
+plv8.cc:1560:25: warning: ‘fake_fcinfo’ may be used uninitialized in this function [-Wmaybe-uninitialized]
+     fake_fcinfo->flinfo = &flinfo;
+     ~~~~~~~~~~~~~~~~~~~~^~~~~~~~~
+[0mg++ -Wall -O2 -std=c++11 -fno-rtti  -Ibuild/v8/include -Ibuild/v8 -std=c++11 -I. -I./ -I/usr/include/postgresql/12/server -I/usr/include/postgresql/internal  -Wdate-time -D_FORTIFY_SOURCE=2 -D_GNU_SOURCE -I/usr/include/libxml2  -I/usr/include/mit-krb5 -fPIC -c -o plv8_type.o plv8_type.cc
+g++ -Wall -O2 -std=c++11 -fno-rtti  -Ibuild/v8/include -Ibuild/v8 -std=c++11 -I. -I./ -I/usr/include/postgresql/12/server -I/usr/include/postgresql/internal  -Wdate-time -D_FORTIFY_SOURCE=2 -D_GNU_SOURCE -I/usr/include/libxml2  -I/usr/include/mit-krb5 -fPIC -c -o plv8_func.o plv8_func.cc
+[91mplv8_func.cc: In function ‘void plv8_FindFunction(const v8::FunctionCallbackInfo<v8::Value>&)’:
+plv8_func.cc:1095:25: warning: ‘fake_fcinfo’ may be used uninitialized in this function [-Wmaybe-uninitialized]
+     fake_fcinfo->flinfo = &flinfo;
+     ~~~~~~~~~~~~~~~~~~~~^~~~~~~~~
+[0mg++ -Wall -O2 -std=c++11 -fno-rtti  -Ibuild/v8/include -Ibuild/v8 -std=c++11 -I. -I./ -I/usr/include/postgresql/12/server -I/usr/include/postgresql/internal  -Wdate-time -D_FORTIFY_SOURCE=2 -D_GNU_SOURCE -I/usr/include/libxml2  -I/usr/include/mit-krb5 -fPIC -c -o plv8_param.o plv8_param.cc
+echo "extern const unsigned char coffee_script_binary_data[] = {" >coffee-script.cc
+(od -txC -v coffee-script.js | \
+sed -e "s/^[0-9]*//" -e s"/ \([0-9a-f][0-9a-f]\)/0x\1,/g" -e"\$d" ) >>coffee-script.cc
+echo "0x00};" >>coffee-script.cc
+g++ -Wall -O2 -std=c++11 -fno-rtti  -Ibuild/v8/include -Ibuild/v8 -std=c++11 -I. -I./ -I/usr/include/postgresql/12/server -I/usr/include/postgresql/internal  -Wdate-time -D_FORTIFY_SOURCE=2 -D_GNU_SOURCE -I/usr/include/libxml2  -I/usr/include/mit-krb5 -fPIC -c -o coffee-script.o coffee-script.cc
+echo "extern const unsigned char livescript_binary_data[] = {" >livescript.cc
+(od -txC -v livescript.js | \
+sed -e "s/^[0-9]*//" -e s"/ \([0-9a-f][0-9a-f]\)/0x\1,/g" -e"\$d" ) >>livescript.cc
+echo "0x00};" >>livescript.cc
+g++ -Wall -O2 -std=c++11 -fno-rtti  -Ibuild/v8/include -Ibuild/v8 -std=c++11 -I. -I./ -I/usr/include/postgresql/12/server -I/usr/include/postgresql/internal  -Wdate-time -D_FORTIFY_SOURCE=2 -D_GNU_SOURCE -I/usr/include/libxml2  -I/usr/include/mit-krb5 -fPIC -c -o livescript.o livescript.cc
+g++ -Wall -Wmissing-prototypes -Wpointer-arith -Wdeclaration-after-statement -Werror=vla -Wendif-labels -Wmissing-format-attribute -Wformat-security -fno-strict-aliasing -fwrapv -fexcess-precision=standard -Wno-format-truncation -Wno-stringop-truncation -g -g -O2 -fstack-protector-strong -Wformat -Werror=format-security -fno-omit-frame-pointer -fPIC -shared -o plv8-2.3.13.so plv8.o plv8_type.o plv8_func.o plv8_param.o coffee-script.o livescript.o -L/usr/lib/x86_64-linux-gnu  -Wl,-z,relro -Wl,-z,now -L/usr/lib/llvm-7/lib  -L/usr/lib/x86_64-linux-gnu/mit-krb5 -Wl,--as-needed  -Lbuild/v8/out.gn/x64.release/obj -Lbuild/v8/out.gn/x64.release/obj/third_party/icu -lv8_base -lv8_snapshot -lv8_libplatform -lv8_libbase -lv8_libsampler -lv8_libplatform -Lbuild/v8/out.gn/x64.release/obj -lrt -std=c++11 -lc++
+mkdir -p upgrade
+./generate_upgrade.sh 2.3.13
+sed -e 's/@PLV8_VERSION@/2.3.13/g' plv8.control.common | g++ -E -P -DLANG_plv8 - > plv8.control
+sed -e 's/@LANG_NAME@/plv8/g' plv8.sql.common | sed -e 's/@PLV8_VERSION@/2.3.13/g' | g++ -E -P -I. -I./ -I/usr/include/postgresql/12/server -I/usr/include/postgresql/internal  -Wdate-time -D_FORTIFY_SOURCE=2 -D_GNU_SOURCE -I/usr/include/libxml2  -I/usr/include/mit-krb5 -DLANG_plv8 - > plv8--2.3.13.sql
+sed -e 's/@PLV8_VERSION@/2.3.13/g' plv8.control.common | g++ -E -P -DLANG_plcoffee - > plcoffee.control
+sed -e 's/@LANG_NAME@/plcoffee/g' plv8.sql.common | sed -e 's/@PLV8_VERSION@/2.3.13/g' | g++ -E -P -I. -I./ -I/usr/include/postgresql/12/server -I/usr/include/postgresql/internal  -Wdate-time -D_FORTIFY_SOURCE=2 -D_GNU_SOURCE -I/usr/include/libxml2  -I/usr/include/mit-krb5 -DLANG_plcoffee - > plcoffee--2.3.13.sql
+sed -e 's/@PLV8_VERSION@/2.3.13/g' plv8.control.common | g++ -E -P -DLANG_plls - > plls.control
+sed -e 's/@LANG_NAME@/plls/g' plv8.sql.common | sed -e 's/@PLV8_VERSION@/2.3.13/g' | g++ -E -P -I. -I./ -I/usr/include/postgresql/12/server -I/usr/include/postgresql/internal  -Wdate-time -D_FORTIFY_SOURCE=2 -D_GNU_SOURCE -I/usr/include/libxml2  -I/usr/include/mit-krb5 -DLANG_plls - > plls--2.3.13.sql
+/usr/bin/clang-7 -xc++ -Wno-ignored-attributes -fno-strict-aliasing -fwrapv -O2  -Wall -O2 -std=c++11 -fno-rtti  -Ibuild/v8/include -Ibuild/v8 -std=c++11 -I. -I./ -I/usr/include/postgresql/12/server -I/usr/include/postgresql/internal  -Wdate-time -D_FORTIFY_SOURCE=2 -D_GNU_SOURCE -I/usr/include/libxml2  -I/usr/include/mit-krb5 -emit-llvm -c -Wall -O2 -std=c++11 -fno-rtti  -Ibuild/v8/include -Ibuild/v8 -std=c++11 -I. -I./ -I/usr/include/postgresql/12/server -I/usr/include/postgresql/internal  -Wdate-time -D_FORTIFY_SOURCE=2 -D_GNU_SOURCE -I/usr/include/libxml2  -I/usr/include/mit-krb5 -fPIC -c -o plv8.bc plv8.cc
+[91mIn file included from plv8.cc:25:
+In file included from /usr/include/postgresql/12/server/commands/trigger.h:17:
+In file included from /usr/include/postgresql/12/server/nodes/execnodes.h:26:
+In file included from /usr/include/postgresql/12/server/utils/sharedtuplestore.h:18:
+In file included from /usr/include/postgresql/12/server/storage/sharedfileset.h:20:
+In file included from /usr/include/postgresql/12/server/storage/spin.h:54:
+/usr/include/postgresql/12/server/storage/s_lock.h:226:2: warning: 'register' storage class specifier is deprecated and incompatible with C++17 [-Wdeprecated-register]
+[0m[91m        register slock_t _res = 1;
+        ^~~~~~~~~
+[0m[91mIn file included from plv8.cc:25:
+In file included from /usr/include/postgresql/12/server/commands/trigger.h:17:
+In file included from /usr/include/postgresql/12/server/nodes/execnodes.h:31:
+In file included from /usr/include/postgresql/12/server/nodes/tidbitmap.h:26:
+In file included from /usr/include/postgresql/12/server/utils/dsa.h:17:
+In file included from /usr/include/postgresql/12/server/port/atomics.h:70:
+/usr/include/postgresql/12/server/port/atomics/arch-x86.h:143:2: warning: 'register' storage class specifier is deprecated and incompatible with C++17 [-Wdeprecated-register]
+        register char _res = 1;
+        ^~~~~~~~~
+[0m[91m2 warnings generated.
+[0m/usr/lib/llvm-7/bin/opt -module-summary -f plv8.bc -o plv8.bc
+/usr/bin/clang-7 -xc++ -Wno-ignored-attributes -fno-strict-aliasing -fwrapv -O2  -Wall -O2 -std=c++11 -fno-rtti  -Ibuild/v8/include -Ibuild/v8 -std=c++11 -I. -I./ -I/usr/include/postgresql/12/server -I/usr/include/postgresql/internal  -Wdate-time -D_FORTIFY_SOURCE=2 -D_GNU_SOURCE -I/usr/include/libxml2  -I/usr/include/mit-krb5 -emit-llvm -c -Wall -O2 -std=c++11 -fno-rtti  -Ibuild/v8/include -Ibuild/v8 -std=c++11 -I. -I./ -I/usr/include/postgresql/12/server -I/usr/include/postgresql/internal  -Wdate-time -D_FORTIFY_SOURCE=2 -D_GNU_SOURCE -I/usr/include/libxml2  -I/usr/include/mit-krb5 -fPIC -c -o plv8_type.bc plv8_type.cc
+[91mIn file included from plv8_type.cc:28:
+In file included from /usr/include/postgresql/12/server/utils/typcache.h:22:
+In file included from /usr/include/postgresql/12/server/utils/dsa.h:17:
+In file included from /usr/include/postgresql/12/server/port/atomics.h:70:
+/usr/include/postgresql/12/server/port/atomics/arch-x86.h:143:2: warning: 'register' storage class specifier is deprecated and incompatible with C++17 [-Wdeprecated-register]
+        register char _res = 1;
+        ^~~~~~~~~
+[0m[91m1 warning generated.
+[0m/usr/lib/llvm-7/bin/opt -module-summary -f plv8_type.bc -o plv8_type.bc
+/usr/bin/clang-7 -xc++ -Wno-ignored-attributes -fno-strict-aliasing -fwrapv -O2  -Wall -O2 -std=c++11 -fno-rtti  -Ibuild/v8/include -Ibuild/v8 -std=c++11 -I. -I./ -I/usr/include/postgresql/12/server -I/usr/include/postgresql/internal  -Wdate-time -D_FORTIFY_SOURCE=2 -D_GNU_SOURCE -I/usr/include/libxml2  -I/usr/include/mit-krb5 -emit-llvm -c -Wall -O2 -std=c++11 -fno-rtti  -Ibuild/v8/include -Ibuild/v8 -std=c++11 -I. -I./ -I/usr/include/postgresql/12/server -I/usr/include/postgresql/internal  -Wdate-time -D_FORTIFY_SOURCE=2 -D_GNU_SOURCE -I/usr/include/libxml2  -I/usr/include/mit-krb5 -fPIC -c -o plv8_func.bc plv8_func.cc
+[91mIn file included from plv8_func.cc:15:
+In file included from /usr/include/postgresql/12/server/executor/spi.h:16:
+In file included from /usr/include/postgresql/12/server/commands/trigger.h:17:
+In file included from /usr/include/postgresql/12/server/nodes/execnodes.h:26:
+In file included from /usr/include/postgresql/12/server/utils/sharedtuplestore.h:18:
+In file included from /usr/include/postgresql/12/server/storage/sharedfileset.h:20:
+In file included from /usr/include/postgresql/12/server/storage/spin.h:54:
+/usr/include/postgresql/12/server/storage/s_lock.h:226:2: warning: 'register' storage class specifier is deprecated and incompatible with C++17 [-Wdeprecated-register]
+[0m[91m        register slock_t _res = 1;
+        ^~~~~~~~~
+[0m[91mIn file included from plv8_func.cc:15:
+In file included from /usr/include/postgresql/12/server/executor/spi.h:16:
+In file included from /usr/include/postgresql/12/server/commands/trigger.h:17:
+In file included from /usr/include/postgresql/12/server/nodes/execnodes.h:31:
+In file included from /usr/include/postgresql/12/server/nodes/tidbitmap.h:26:
+In file included from /usr/include/postgresql/12/server/utils/dsa.h:17:
+In file included from /usr/include/postgresql/12/server/port/atomics.h:70:
+/usr/include/postgresql/12/server/port/atomics/arch-x86.h:143:2: warning: 'register' storage class specifier is deprecated and incompatible with C++17 [-Wdeprecated-register]
+[0m[91m        register char _res = 1;
+        ^~~~~~~~~
+[0m[91m2 warnings generated.
+[0m/usr/lib/llvm-7/bin/opt -module-summary -f plv8_func.bc -o plv8_func.bc
+/usr/bin/clang-7 -xc++ -Wno-ignored-attributes -fno-strict-aliasing -fwrapv -O2  -Wall -O2 -std=c++11 -fno-rtti  -Ibuild/v8/include -Ibuild/v8 -std=c++11 -I. -I./ -I/usr/include/postgresql/12/server -I/usr/include/postgresql/internal  -Wdate-time -D_FORTIFY_SOURCE=2 -D_GNU_SOURCE -I/usr/include/libxml2  -I/usr/include/mit-krb5 -emit-llvm -c -Wall -O2 -std=c++11 -fno-rtti  -Ibuild/v8/include -Ibuild/v8 -std=c++11 -I. -I./ -I/usr/include/postgresql/12/server -I/usr/include/postgresql/internal  -Wdate-time -D_FORTIFY_SOURCE=2 -D_GNU_SOURCE -I/usr/include/libxml2  -I/usr/include/mit-krb5 -fPIC -c -o plv8_param.bc plv8_param.cc
+/usr/lib/llvm-7/bin/opt -module-summary -f plv8_param.bc -o plv8_param.bc
+/usr/bin/clang-7 -xc++ -Wno-ignored-attributes -fno-strict-aliasing -fwrapv -O2  -Wall -O2 -std=c++11 -fno-rtti  -Ibuild/v8/include -Ibuild/v8 -std=c++11 -I. -I./ -I/usr/include/postgresql/12/server -I/usr/include/postgresql/internal  -Wdate-time -D_FORTIFY_SOURCE=2 -D_GNU_SOURCE -I/usr/include/libxml2  -I/usr/include/mit-krb5 -emit-llvm -c -Wall -O2 -std=c++11 -fno-rtti  -Ibuild/v8/include -Ibuild/v8 -std=c++11 -I. -I./ -I/usr/include/postgresql/12/server -I/usr/include/postgresql/internal  -Wdate-time -D_FORTIFY_SOURCE=2 -D_GNU_SOURCE -I/usr/include/libxml2  -I/usr/include/mit-krb5 -fPIC -c -o coffee-script.bc coffee-script.cc
+/usr/lib/llvm-7/bin/opt -module-summary -f coffee-script.bc -o coffee-script.bc
+/usr/bin/clang-7 -xc++ -Wno-ignored-attributes -fno-strict-aliasing -fwrapv -O2  -Wall -O2 -std=c++11 -fno-rtti  -Ibuild/v8/include -Ibuild/v8 -std=c++11 -I. -I./ -I/usr/include/postgresql/12/server -I/usr/include/postgresql/internal  -Wdate-time -D_FORTIFY_SOURCE=2 -D_GNU_SOURCE -I/usr/include/libxml2  -I/usr/include/mit-krb5 -emit-llvm -c -Wall -O2 -std=c++11 -fno-rtti  -Ibuild/v8/include -Ibuild/v8 -std=c++11 -I. -I./ -I/usr/include/postgresql/12/server -I/usr/include/postgresql/internal  -Wdate-time -D_FORTIFY_SOURCE=2 -D_GNU_SOURCE -I/usr/include/libxml2  -I/usr/include/mit-krb5 -fPIC -c -o livescript.bc livescript.cc
+/usr/lib/llvm-7/bin/opt -module-summary -f livescript.bc -o livescript.bc
+cd build/v8 ; env CXXFLAGS=-fPIC CFLAGS=-fPIC ninja -C out.gn/x64.release d8
+ninja: Entering directory `out.gn/x64.release'
+ninja: no work to do.
+mkdir -p upgrade
+./generate_upgrade.sh 2.3.13
+/bin/mkdir -p '/usr/lib/postgresql/12/lib'
+/bin/mkdir -p '/usr/share/postgresql/12/extension'
+/bin/mkdir -p '/usr/share/postgresql/12/extension'
+/usr/bin/install -c -m 755  plv8-2.3.13.so '/usr/lib/postgresql/12/lib/plv8-2.3.13.so'
+/usr/bin/install -c -m 644 .//plv8.control '/usr/share/postgresql/12/extension/'
+/usr/bin/install -c -m 644 .//plv8.control .//plv8--2.3.13.sql .//upgrade/plv8--2.3.10--2.3.13.sql .//upgrade/plv8--1.5.7--2.3.13.sql .//upgrade/plv8--2.3.7--2.3.13.sql .//upgrade/plv8--1.5.0--2.3.13.sql .//upgrade/plv8--1.5.6--2.3.13.sql .//upgrade/plv8--2.0.3--2.3.13.sql .//upgrade/plv8--2.3.3--2.3.13.sql .//upgrade/plv8--2.0.0--2.3.13.sql .//upgrade/plv8--1.5.3--2.3.13.sql .//upgrade/plv8--2.3.9--2.3.13.sql .//upgrade/plv8--2.3.4--2.3.13.sql .//upgrade/plv8--2.3.1--2.3.13.sql .//upgrade/plv8--1.5.4--2.3.13.sql .//upgrade/plv8--1.5.1--2.3.13.sql .//upgrade/plv8--1.5.2--2.3.13.sql .//upgrade/plv8--2.3.11--2.3.13.sql .//upgrade/plv8--2.3.2--2.3.13.sql .//upgrade/plv8--1.5.5--2.3.13.sql .//upgrade/plv8--2.3.6--2.3.13.sql .//upgrade/plv8--2.3.0--2.3.13.sql .//upgrade/plv8--2.1.0--2.3.13.sql .//upgrade/plv8--2.1.2--2.3.13.sql .//upgrade/plv8--2.3.8--2.3.13.sql .//upgrade/plv8--2.3.12--2.3.13.sql .//upgrade/plv8--2.0.1--2.3.13.sql .//upgrade/plv8--2.3.5--2.3.13.sql .//plcoffee.control .//plcoffee--2.3.13.sql .//plls.control .//plls--2.3.13.sql  '/usr/share/postgresql/12/extension/'
+/bin/mkdir -p '/usr/lib/postgresql/12/lib/bitcode/plv8-2.3.13'
+/bin/mkdir -p '/usr/lib/postgresql/12/lib/bitcode'/plv8-2.3.13/
+/usr/bin/install -c -m 644 plv8.bc '/usr/lib/postgresql/12/lib/bitcode'/plv8-2.3.13/./
+/usr/bin/install -c -m 644 plv8_type.bc '/usr/lib/postgresql/12/lib/bitcode'/plv8-2.3.13/./
+/usr/bin/install -c -m 644 plv8_func.bc '/usr/lib/postgresql/12/lib/bitcode'/plv8-2.3.13/./
+/usr/bin/install -c -m 644 plv8_param.bc '/usr/lib/postgresql/12/lib/bitcode'/plv8-2.3.13/./
+/usr/bin/install -c -m 644 coffee-script.bc '/usr/lib/postgresql/12/lib/bitcode'/plv8-2.3.13/./
+/usr/bin/install -c -m 644 livescript.bc '/usr/lib/postgresql/12/lib/bitcode'/plv8-2.3.13/./
+cd '/usr/lib/postgresql/12/lib/bitcode' && /usr/lib/llvm-7/bin/llvm-lto -thinlto -thinlto-action=thinlink -o plv8-2.3.13.index.bc plv8-2.3.13/plv8.bc plv8-2.3.13/plv8_type.bc plv8-2.3.13/plv8_func.bc plv8-2.3.13/plv8_param.bc plv8-2.3.13/coffee-script.bc plv8-2.3.13/livescript.bc
+Reading package lists...
+Building dependency tree...
+Reading state information...
+0 upgraded, 0 newly installed, 0 to remove and 7 not upgraded.
+Reading package lists...
+Building dependency tree...
+Reading state information...
+0 upgraded, 0 newly installed, 0 to remove and 7 not upgraded.
+Removing intermediate container 5e95741130e0
+ ---> 758d099e60cb
+Successfully built 758d099e60cb
+Successfully tagged smak/postgres-plv8:12-2312
