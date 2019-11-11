@@ -61,3 +61,5 @@ MIT
 [docker-hub-url]: https://hub.docker.com/r/clkao/postgres-plv8/
 [docker-pulls-image]: https://img.shields.io/docker/pulls/clkao/postgres-plv8.svg?style=flat-square
 [docker-stars-image]: https://img.shields.io/docker/stars/clkao/postgres-plv8.svg?style=flat-square
+[docker-layers-image]: https://img.shields.io/microbadger/layers/clkao/postgres-plv8.svg?style=flat-square
+[docker-size-image]: https://img.shields.io/microbadger/image-size/clkao/postgres-plv8.svg?style=flat-square
