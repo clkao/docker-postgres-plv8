@@ -1,4 +1,4 @@
-FROM postgres:10
+FROM postgres:12
 
 MAINTAINER Chia-liang Kao <clkao@clkao.org>
 
@@ -16,8 +16,11 @@ RUN buildDependencies="build-essential \
     apt-transport-https \
     cmake \
     libc++-dev \
+    libc++abi-dev \
     postgresql-server-dev-$PG_MAJOR" \
-    runtimeDependencies="libc++1" \
+  && runtimeDependencies="libc++1 \
+    libtinfo5 \
+    libc++abi1" \
   && apt-get update \
   && apt-get install -y --no-install-recommends ${buildDependencies} ${runtimeDependencies} \
   && mkdir -p /tmp/build \
