@@ -17,6 +17,7 @@ env:
   - VERSION=10-2
   - VERSION=11-2
   - VERSION=12-2
+  - VERSION=13-2
 
 language: bash
 
