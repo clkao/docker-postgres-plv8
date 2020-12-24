@@ -21,8 +21,7 @@ language: bash
 script:
   - docker build -t "${IMAGE}" "${VERSION}"
   - docker run -d --name postgres "${IMAGE}"
-  - sleep 3
-  - while ! docker exec -it postgres pg_isready -U postgres -h 127.0.0.1; do echo "$(date) - waiting for database to start"; sleep 1; done
+  - docker exec -it postgres pg_isready --timeout=60  -U postgres -h 127.0.0.1;
   - docker exec -it postgres psql -U postgres -c 'CREATE EXTENSION plv8; DO $$ plv8.elog(WARNING, plv8.version) $$ LANGUAGE plv8' | grep "${VERSION#????}"
 
 services: docker
