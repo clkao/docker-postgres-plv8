@@ -10,6 +10,7 @@ RUN buildDependencies="build-essential \
     curl \
     git-core \
     python \
+    python3 \
     gpp \
     cpp \
     pkg-config \
